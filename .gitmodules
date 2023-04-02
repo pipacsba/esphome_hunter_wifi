@@ -1,0 +1,3 @@
+[submodule "hunter-wifi"]
+	path = hunter-wifi
+	url = https://github.com/pipacsba/hunter-wifi.git
