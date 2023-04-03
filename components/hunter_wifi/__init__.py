@@ -3,10 +3,10 @@ import esphome.config_validation as cv
 from esphome import pins
 from esphome.const import CONF_ID, CONF_PIN
 
-MULTI_CONF = True
+MULTI_CONF = False; #can be True in future if I understand the consequences
 AUTO_LOAD = ["switch"]
 
-dallas_ns = cg.esphome_ns.namespace("hunter-wifi")
+dallas_ns = cg.esphome_ns.namespace("hunterwifi")
 HunterWifiComponent = dallas_ns.class_("HunterWifiComponent", cg.Component)
 
 CONFIG_SCHEMA = cv.Schema(
