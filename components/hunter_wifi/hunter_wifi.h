@@ -26,9 +26,8 @@ class HunterWifiComponent  : public Component {
   friend HunterZoneSwitch;
 
   InternalGPIOPin *pin_;
-  HunterRoam *hunter_roam;
-  std::vector<HunterZoneSwitch *> switches_;
-  std::vector<uint64_t> found_switches_;
+  HunterRoam *hunter_roam_;
+
 };
 
 /// Internal class that helps us create multiple sensors for one Dallas hub.
