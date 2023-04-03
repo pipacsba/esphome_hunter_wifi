@@ -14,7 +14,7 @@ CONFIG_SCHEMA = cv.Schema(
         cv.GenerateID(): cv.declare_id(HunterWifiComponent),
         cv.Required(CONF_PIN): pins.internal_gpio_output_pin_schema,
     }
-)
+).extend(cv.COMPONENT_SCHEMA)
 
 
 async def to_code(config):
