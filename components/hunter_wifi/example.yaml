@@ -1,9 +1,7 @@
 - esphome_hunter_wifi:
   pin: 16
   valves:
-    - name: "lawn sprinkler 0"
-      id: "lawn_sprinkler_valve_sw0"
-      valve_number: 1
-    - name: "lawn sprinkler 1"
-      id: "lawn_sprinkler_valve_sw1"
-      valve_number: 2
+    - id: "lawn_sprinkler_valve_sw0"
+      number: 1
+    - id: "lawn_sprinkler_valve_sw1"
+      number: 2
