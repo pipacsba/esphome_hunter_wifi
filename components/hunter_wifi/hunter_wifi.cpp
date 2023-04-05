@@ -15,18 +15,20 @@ HunterZoneSwitch::HunterZoneSwitch(switch_::Switch *hunterwifi_switch) : on_swit
 HunterZoneSwitch::HunterZoneSwitch(switch_::Switch *off_switch, switch_::Switch *on_switch) : off_switch_(off_switch), on_switch_(on_switch) {}
 
 void HunterZoneSwitch::turn_off() {
-  if (!this->state()) {  // do nothing if we're already in the requested state
-    return;
-  }
-  if (this->off_switch_ != nullptr) {  // latching valve, start a pulse
-    if (!this->off_switch_->state) {
-      this->off_switch_->turn_on();
+  auto *hunter_roam_ = this->parent_->smartPort;
+  byte a_zone = this->number;
+  
+  byte result = hunter_roam.stopZone(a_zone);
+  if (result == 0)
+    {
+      this->state_ = false;
     }
-    this->pinned_millis_ = millis();
-  } else if (this->on_switch_ != nullptr) {  // non-latching valve
-    this->on_switch_->turn_off();
+  else
+  {
+    //errorHint
+    LOG_
   }
-  this->state_ = false;
+  
 }
 
 void HunterZoneSwitch::turn_on() {
