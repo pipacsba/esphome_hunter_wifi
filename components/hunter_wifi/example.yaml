@@ -1,7 +1,28 @@
-- esphome_hunter_wifi:
+esphome:
+  name: aaa
+  friendly_name: aaa
+
+esp32:
+  board: esp32-s3-devkitc-1
+  framework:
+    type: arduino
+
+# Enable logging
+logger:
+
+wifi:
+  ssid: !secret wifi_ssid
+
+external_components:
+  - source:
+      type: git
+      url: https://github.com/pipacsba/esphome_hunter_wifi.git
+
+hunter_wifi:
   pin: 16
   valves:
     - id: "lawn_sprinkler_valve_sw0"
       number: 1
     - id: "lawn_sprinkler_valve_sw1"
       number: 2
+
