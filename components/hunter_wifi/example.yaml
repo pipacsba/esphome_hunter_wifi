@@ -10,9 +10,6 @@ esp32:
 # Enable logging
 logger:
 
-wifi:
-  ssid: !secret wifi_ssid
-
 external_components:
   - source:
       type: git
@@ -25,4 +22,5 @@ hunter_wifi:
       number: 1
     - id: "lawn_sprinkler_valve_sw1"
       number: 2
+
 
