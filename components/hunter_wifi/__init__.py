@@ -32,13 +32,14 @@ def validate_min_max(config):
     return config
 
 def validate_hunterwifi(config):
+  for hunterwifi_controller_index, hunterwifi_controller in enumerate(config):
     if len(hunterwifi_controller[CONF_VALVES]) <= 1:
-        raise cv.Invalid(f"At least valve is required")
+        raise cv.Invalid(f"At least valve is required for {hunterwifi_controller_index}")
     for valve in hunterwifi_controller[CONF_VALVES]:
         if CONF_ID not in valve:
-            raise cv.Invalid(f"{CONF_ID} is required for each valve!")
+            raise cv.Invalid(f"{CONF_ID} is required for each valve")
         if CONF_NUMBER not in valve:
-            raise cv.Invalid(f"{CONF_NUMBER} is required for each valve!")
+            raise cv.Invalid(f"{CONF_NUMBER} is required for each valve")
     return config
 
 HUNTERWIFI_VALVE_SCHEMA = cv.Schema(
@@ -84,8 +85,35 @@ CONFIG_SCHEMA = cv.All(
 )
 
 async def to_code(config):
-    var = cg.new_Pvariable(config[CONF_ID])
-    await cg.register_component(var, config)
-
+  for hunterwifi_controller in config:
+    var = cg.new_Pvariable(hunterwifi_controller[CONF_ID])
+    await cg.register_component(var, hunterwifi_controller)
+        
+    for valve in hunterwifi_controller[CONF_VALVES]:
+        sw_valve_var = await switch.new_switch(valve[CONF_ID])
+        await cg.register_component(sw_valve_var, valve[CONF_ID])
+        cg.add(var.add_valve(sw_valve_var))
+   
     pin = await cg.gpio_pin_expression(config[CONF_PIN])
     cg.add(var.set_pin(pin))
+        
+  # assign hunter zone number to switches (valve number/id)
+  for hunterwifi_controller in config:
+    var = await cg.get_variable(hunterwifi_controller[CONF_ID])
+    for valve_index, valve in enumerate(hunterwifi_controller[CONF_VALVES]):
+          valve_switch = await cg.get_variable(valve[CONF_ID])
+          cg.add(
+              var.configure_valve_switch(
+                  valve_index, valve_switch, valve[CONF_NUMBER]
+              )
+          )
+   # I do not know what this part does, copied and adopted from sprinkler component
+  for hunterwifi_controller in config:
+      var = await cg.get_variable(hunterwifi_controller[CONF_ID])
+      for controller_to_add in config:
+          if hunterwifi_controller[CONF_ID] != controller_to_add[CONF_ID]:
+              cg.add(
+                  var.add_controller(
+                      await cg.get_variable(controller_to_add[CONF_ID])
+                  )
+              )
