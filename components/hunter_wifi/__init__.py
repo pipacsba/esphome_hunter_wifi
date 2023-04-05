@@ -47,7 +47,7 @@ HUNTERWIFI_VALVE_SCHEMA = cv.Schema(
         cv.Required(CONF_NUMBER): cv.maybe_simple_value(
             number.NUMBER_SCHEMA.extend(
                 {
-                    cv.GenerateID(): cv.declare_id(HunterWifiControllerNumber),
+                    cv.GenerateID(): cv.declare_id(HunterWifiControllerNumber),  // ittabaj
                     cv.Optional(
                         CONF_ENTITY_CATEGORY, default=ENTITY_CATEGORY_CONFIG
                     ): cv.entity_category,
