@@ -6,7 +6,7 @@
 #include <utility>
 
 namespace esphome {
-namespace hunterwifi  {
+namespace hunterwifi {
 
 static const char *const TAG = "hunterwifi";
   
@@ -97,7 +97,6 @@ void HunterWifiComponent::dump_config() {
     ESP_LOGCONFIG(TAG, "    Zone: %u", this->valve_zone(valve_number));
     }
   }
-}
   
 void HunterWifiComponent::configure_valve_switch(size_t valve_number, switch_::Switch *valve_switch, uint16_t zone_number) {
   if (this->is_a_valid_valve(valve_number)) {
@@ -116,9 +115,7 @@ void HunterWifiComponent::add_valve(HunterZoneSwitch  *valve_sw, uint16_t zone_n
   new_valve->zone_number = zone_number;
 }
 
-void HunterWifiComponent::update() {
-
-}
+void HunterWifiComponent::update() {}
 
 size_t HunterWifiComponent::number_of_valves() { return this->valve_.size(); }
 
