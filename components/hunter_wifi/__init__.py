@@ -13,7 +13,8 @@ from esphome.const import (
     CONF_INITIAL_VALUE,
     CONF_MAX_VALUE,
     CONF_MIN_VALUE,
-    CONF_RESTORE_VALUE
+    CONF_RESTORE_VALUE,
+    CONF_STEP,
 )
 
 
@@ -66,9 +67,6 @@ HUNTERWIFI_VALVE_SCHEMA = cv.Schema(
                     cv.Optional(CONF_MIN_VALUE, default=1): cv.positive_int,
                     cv.Optional(CONF_RESTORE_VALUE, default=True): cv.boolean,
                     cv.Optional(CONF_STEP, default=1): cv.positive_int,
-                    cv.Optional(CONF_SET_ACTION): automation.validate_automation(
-                        single=True
-                    ),
                 }
             ).extend(cv.COMPONENT_SCHEMA),
             validate_min_max,
