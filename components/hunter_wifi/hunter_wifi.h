@@ -26,7 +26,7 @@ class HunterWifiComponent  : public Component {
 
   void setup() override;
   void dump_config() override;
-  void set_name(const std::string &name) { this->name_ = name; }
+  //void set_name(const std::string &name) { this->name_ = name; }
   void add_valve(HunterZoneSwitch *valve_sw, uint16_t zone_number); 
  
   /// returns a pointer to a valve's switch object
@@ -51,11 +51,9 @@ class HunterWifiComponent  : public Component {
 
 };
 
-class HunterZoneSwitch {
+class HunterZoneSwitch : public switch_::Switch, public Component  {
  public:
   HunterZoneSwitch();
-  HunterZoneSwitch(switch_::Switch *hunterwifi_switch);
-  HunterZoneSwitch(switch_::Switch *off_switch, switch_::Switch *on_switch);
 
   bool state();  // returns the switch's current state
   void set_off_switch(switch_::Switch *off_switch) { this->off_switch_ = off_switch; }
