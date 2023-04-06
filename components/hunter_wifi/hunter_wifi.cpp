@@ -76,12 +76,14 @@ void HunterWifiComponent::configure_valve_switch(size_t valve_number, switch_::S
   }
 }
 
-void HunterWifiComponent::add_valve(HunterZoneSwitch  *valve_sw) {
+// add_valve(HunterZoneSwitch *valve_sw, uint16_t zone_number); 
+void HunterWifiComponent::add_valve(HunterZoneSwitch  *valve_sw, uint16_t zone_number) {
   auto new_valve_number = this->number_of_valves();
   this->valve_.resize(new_valve_number + 1);
   HunterValve *new_valve = &this->valve_[new_valve_number];
 
   new_valve->valve_switch = valve_sw;
+  new_valve->zone_number = zone_number;
 }
 
 void HunterWifiComponent::register_switch(HunterZoneSwitch  *switch) { this->switches_.push_back(switch); }
