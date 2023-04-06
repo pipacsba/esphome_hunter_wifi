@@ -99,9 +99,8 @@ async def to_code(config):
         
     for valve_index, valve in enumerate(hunterwifi_controller[CONF_VALVES]):
         sw_valve_var = await switch.new_switch(valve[CONF_ID])
-        await cg.register_component(sw_valve_var, valve[CONF_ID], valve[CONF_NUMBER])
-        cg.add(var.add_valve(sw_valve_var))
-
+        await cg.register_component(sw_valve_var, valve[CONF_ID])
+        cg.add(var.add_valve(sw_valve_var, valve[CONF_NUMBER]))
         
     pin = await cg.gpio_pin_expression(hunterwifi_controller[CONF_PIN])
     cg.add(var.set_pin(pin))
