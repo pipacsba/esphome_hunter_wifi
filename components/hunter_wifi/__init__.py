@@ -101,20 +101,24 @@ async def to_code(config):
         sw_valve_var = await switch.new_switch(valve[CONF_ID])
         await cg.register_component(sw_valve_var, valve[CONF_ID])
         cg.add(var.add_valve(sw_valve_var))
+        cg.add(
+            var.configure_valve_switch(
+                valve_index, sw_valve_var, valve[CONF_NUMBER]
+            )
    
     pin = await cg.gpio_pin_expression(hunterwifi_controller[CONF_PIN])
     cg.add(var.set_pin(pin))
         
   # assign hunter zone number to switches (valve number/id)
-  for hunterwifi_controller in config:
-    var = await cg.get_variable(hunterwifi_controller[CONF_ID])
-    for valve_index, valve in enumerate(hunterwifi_controller[CONF_VALVES]):
-          valve_switch = await cg.get_variable(valve[CONF_ID])
-          cg.add(
-              var.configure_valve_switch(
-                  valve_index, valve_switch, valve[CONF_NUMBER]
-              )
-          )
+  #for hunterwifi_controller in config:
+  #  var = await cg.get_variable(hunterwifi_controller[CONF_ID])
+  #  for valve_index, valve in enumerate(hunterwifi_controller[CONF_VALVES]):
+  #        valve_switch = await cg.get_variable(valve[CONF_ID])
+  #        cg.add(
+  #            var.configure_valve_switch(
+  #                valve_index, valve_switch, valve[CONF_NUMBER]
+  #            )
+  #        )
    # I do not know what this part does, copied and adopted from sprinkler component
   for hunterwifi_controller in config:
       var = await cg.get_variable(hunterwifi_controller[CONF_ID])
