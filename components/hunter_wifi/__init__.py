@@ -12,7 +12,7 @@ from esphome.const import (
     ENTITY_CATEGORY_CONFIG, 
     CONF_INITIAL_VALUE,
     CONF_MAX_VALUE,
-    CONF_MAX_VALUE
+    CONF_MIN_VALUE
 )
 
 
