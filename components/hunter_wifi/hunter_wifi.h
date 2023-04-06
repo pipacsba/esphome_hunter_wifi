@@ -22,7 +22,6 @@ struct HunterValve {
 class HunterWifiComponent  : public Component {
  public:
   void set_pin(InternalGPIOPin *pin) { pin_ = pin; }
-  void register_switch(HunterZoneSwitch *switch);
 
   void setup() override;
   void dump_config() override;
@@ -35,11 +34,6 @@ class HunterWifiComponent  : public Component {
   size_t number_of_valves();
   
  protected:
-   /// returns true if valve number is enabled
-  bool valve_is_enabled_(size_t valve_number);
- 
-  /// returns true if any valve is enabled
-  bool any_valve_is_enabled_();
  
   /// Sprinkler valve objects
   std::vector<HunterValve> valve_;
@@ -93,7 +87,6 @@ class HunterZoneSwitch : public switch_::Switch, public Component {
   Trigger<> *turn_off_trigger_;
   Trigger<> *prev_trigger_{nullptr};
 };
- 
 
  
 }  // namespace hunterwifi
