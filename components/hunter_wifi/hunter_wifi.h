@@ -42,7 +42,7 @@ class HunterWifiComponent  : public Component {
   bool any_valve_is_enabled_();
  
   /// Sprinkler valve objects
-  std::vector<HunterZoneSwitch> valve_;
+  std::vector<HunterValve> valve_;
  
   friend HunterZoneSwitch;
 
@@ -51,24 +51,47 @@ class HunterWifiComponent  : public Component {
 
 };
 
-class HunterZoneSwitch : public switch_::Switch, public Component  {
+//class HunterZoneSwitch : public switch_::Switch, public Component  {
+// public:
+//  HunterZoneSwitch();
+//
+//  bool state();  // returns the switch's current state
+//  void set_off_switch(switch_::Switch *off_switch) { this->off_switch_ = off_switch; }
+//  void set_on_switch(switch_::Switch *on_switch) { this->on_switch_ = on_switch; }
+//  void sync_valve_state();  // syncs internal state to switch;
+//  void turn_off();        // sets internal flag and actuates the switch
+//  void turn_on();         // sets internal flag and actuates the switch
+//  switch_::Switch *off_switch() { return this->off_switch_; }
+//  switch_::Switch *on_switch() { return this->on_switch_; }
+//
+//protected:
+//  bool state_{false};
+//  uint32_t zone_number_{0};
+//  //switch_::Switch *off_switch_{nullptr};  // only used for latching valves
+//  switch_::Switch *on_switch_{nullptr};   // used for both latching and non-latching valves
+//};
+  
+class HunterZoneSwitch : public switch_::Switch, public Component {
  public:
   HunterZoneSwitch();
 
-  bool state();  // returns the switch's current state
-  void set_off_switch(switch_::Switch *off_switch) { this->off_switch_ = off_switch; }
-  void set_on_switch(switch_::Switch *on_switch) { this->on_switch_ = on_switch; }
-  void sync_valve_state();  // syncs internal state to switch;
-  void turn_off();        // sets internal flag and actuates the switch
-  void turn_on();         // sets internal flag and actuates the switch
-  switch_::Switch *off_switch() { return this->off_switch_; }
-  switch_::Switch *on_switch() { return this->on_switch_; }
+  void setup() override;
+  void dump_config() override;
+
+  void set_state_lambda(std::function<optional<bool>()> &&f);
+  Trigger<> *get_turn_on_trigger() const;
+  Trigger<> *get_turn_off_trigger() const;
+  void loop() override;
+
+  float get_setup_priority() const override;
 
  protected:
-  bool state_{false};
-  uint32_t zone_number_{0};
-  //switch_::Switch *off_switch_{nullptr};  // only used for latching valves
-  switch_::Switch *on_switch_{nullptr};   // used for both latching and non-latching valves
+  void write_state(bool state) override;
+
+  optional<std::function<optional<bool>()>> f_;
+  Trigger<> *turn_on_trigger_;
+  Trigger<> *turn_off_trigger_;
+  Trigger<> *prev_trigger_{nullptr};
 };
  
 
