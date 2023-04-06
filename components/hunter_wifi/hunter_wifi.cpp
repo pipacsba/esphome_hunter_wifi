@@ -84,13 +84,13 @@ void HunterWifiComponent::add_valve(HunterZoneSwitch  *valve_sw) {
   new_valve->valve_switch = valve_sw;
 }
 
-  
 void HunterWifiComponent::register_switch(HunterZoneSwitch  *switch) { this->switches_.push_back(switch); }
 
 void HunterWifiComponent::update() {
 
 }
 
+size_t Sprinkler::number_of_valves() { return this->valve_.size(); }
 
 //  auto *wire = this->parent_->one_wire_;
 //  {
