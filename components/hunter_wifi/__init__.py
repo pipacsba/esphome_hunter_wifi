@@ -14,9 +14,6 @@ CONF_VALVES = "valves"
 
 hunterwifi_ns = cg.esphome_ns.namespace("hunterwifi")
 HunterWifiComponent = hunterwifi_ns.class_("HunterWifiComponent", cg.Component)
-HunterWifiControllerNumber = sprinkler_ns.class_(
-    "HunterWifiControllerNumber", number.Number, cg.Component
-)
 HunterControllerSwitch = hunterwifi_ns.class_(
     "HunterControllerSwitch", switch.Switch, cg.Component
 )
@@ -49,7 +46,7 @@ HUNTERWIFI_VALVE_SCHEMA = cv.Schema(
         cv.Required(CONF_NUMBER): cv.maybe_simple_value(
             number.NUMBER_SCHEMA.extend(
                 {
-                    cv.GenerateID(): cv.declare_id(HunterWifiControllerNumber),
+                    #cv.GenerateID(): cv.declare_id(HunterWifiControllerNumber),
                     cv.Optional(
                         CONF_ENTITY_CATEGORY, default=ENTITY_CATEGORY_CONFIG
                     ): cv.entity_category,
