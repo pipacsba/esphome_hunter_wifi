@@ -3,7 +3,7 @@ import esphome.config_validation as cv
 from esphome import pins
 from esphome.components import number # ez valoszinu nem fog kelleni
 from esphome.components import switch
-from esphome.const import CONF_ID, CONF_PIN, CONF_NAME, CONF_NUMBER, CONF_ENTITY_CATEGORY
+from esphome.const import CONF_ID, CONF_PIN, CONF_NAME, CONF_NUMBER, CONF_ENTITY_CATEGORY, ENTITY_CATEGORY_CONFIG
 
 
 MULTI_CONF = False; #can be True in future if I understand the consequences
