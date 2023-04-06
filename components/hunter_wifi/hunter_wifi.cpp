@@ -85,7 +85,7 @@ void HunterWifiComponent ::setup() {
 
   pin_->setup();
 
-  smartPort = new HunterRoam(pin_);  // NOLINT(cppcoreguidelines-owning-memory)
+  hunter_roam_ smartPort = new HunterRoam(pin_);  // NOLINT(cppcoreguidelines-owning-memory)
 }
 
 void HunterWifiComponent::dump_config() {
@@ -93,18 +93,11 @@ void HunterWifiComponent::dump_config() {
   LOG_PIN("  Pin: ", this->pin_);
   for (size_t valve_number = 0; valve_number < this->number_of_valves(); valve_number++) {
     ESP_LOGCONFIG(TAG, "  Valve %u:", valve_number);
-    ESP_LOGCONFIG(TAG, "    Name: %s", this->valve_name(valve_name));
-    ESP_LOGCONFIG(TAG, "    Zone: %u", this->valve_zone(valve_number));
+    ESP_LOGCONFIG(TAG, "    Name: %s", this->valve_[valve_number]->valve_name);
+    ESP_LOGCONFIG(TAG, "    Zone: %u", this->valve_[valve_number]->valve_name);
     }
   }
   
-void HunterWifiComponent::configure_valve_switch(size_t valve_number, switch_::Switch *valve_switch, uint16_t zone_number) {
-  if (this->is_a_valid_valve(valve_number)) {
-    this->valve_[valve_number].valve_switch.set_on_switch(valve_switch);
-    this->valve_[valve_number].zone_number = zone_number;
-  }
-}
-
 // add_valve(HunterZoneSwitch *valve_sw, uint16_t zone_number); 
 void HunterWifiComponent::add_valve(HunterZoneSwitch  *valve_sw, uint16_t zone_number) {
   auto new_valve_number = this->number_of_valves();
@@ -115,24 +108,7 @@ void HunterWifiComponent::add_valve(HunterZoneSwitch  *valve_sw, uint16_t zone_n
   new_valve->zone_number = zone_number;
 }
 
-void HunterWifiComponent::update() {}
-
 size_t HunterWifiComponent::number_of_valves() { return this->valve_.size(); }
-
-void HunterWifiComponent::setup() {
-  this->all_valves_off_();
-}
-
-//this does nothing yet - TODO
-void HunterWifiComponent::all_valves_off_() 
-{
-  for (size_t valve_index = 0; valve_index < this->number_of_valves(); valve_index++) {
-//    if (this->valve_[valve_index].valve_switch.state()) {
-//      this->valve_[valve_index].valve_switch.turn_off();
-//    }
-  }
-  ESP_LOGD(TAG, "All valves stopped");
-}
 
 
 }  // namespace dallas

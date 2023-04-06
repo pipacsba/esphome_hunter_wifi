@@ -4,6 +4,7 @@
 #include "esphome/components/switch/switch.h"
 #include "esphome/core/hal.h"
 #include "esphome/components/number/number.h"
+#include "esphome/core/automation.h"
 #include "HunterRoam.h"
 
 #include <vector>
@@ -21,7 +22,7 @@ struct HunterValve {
  
 class HunterWifiComponent  : public Component {
  public:
-  void set_pin(InternalGPIOPin *pin) { pin_ = pin; }
+  void set_pin(InternalGPIOPin *pin) { pin_ = pin.get_pin(); }
 
   void setup() override;
   void dump_config() override;
