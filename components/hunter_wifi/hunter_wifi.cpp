@@ -16,7 +16,7 @@ HunterZoneSwitch::HunterZoneSwitch(switch_::Switch *off_switch, switch_::Switch 
 
 void HunterZoneSwitch::turn_off() {
   auto *hunter_roam_ = this->parent_->smartPort;
-  byte a_zone = this->zone_number;
+  byte a_zone = (byte) this->zone_number;
   
   byte result = hunter_roam.stopZone(a_zone);
   if (result == 0)
@@ -34,7 +34,7 @@ void HunterZoneSwitch::turn_off() {
 void HunterZoneSwitch::turn_on() {
 
   auto *hunter_roam_ = this->parent_->smartPort;
-  byte a_zone = this->zone_number;
+  byte a_zone = (byte) this->zone_number;
   
   byte result = hunter_roam.startZone(a_zone, 5);
   if (result == 0)
