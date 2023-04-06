@@ -26,8 +26,8 @@ CONF_VALVES = "valves"
 
 hunterwifi_ns = cg.esphome_ns.namespace("hunterwifi")
 HunterWifiComponent = hunterwifi_ns.class_("HunterWifiComponent", cg.Component)
-HunterControllerSwitch = hunterwifi_ns.class_(
-    "HunterControllerSwitch", switch.Switch, cg.Component
+HunterZoneSwitch = hunterwifi_ns.class_(
+    "HunterZoneSwitch", switch.Switch, cg.Component
 )
 
 def validate_min_max(config):
