@@ -16,7 +16,7 @@ HunterZoneSwitch::HunterZoneSwitch(switch_::Switch *off_switch, switch_::Switch 
 
 void HunterZoneSwitch::turn_off() {
   auto *hunter_roam_ = this->parent_->smartPort;
-  byte a_zone = this->number;
+  byte a_zone = this->zone_number;
   
   byte result = hunter_roam.stopZone(a_zone);
   if (result == 0)
@@ -26,26 +26,28 @@ void HunterZoneSwitch::turn_off() {
   else
   {
     //errorHint
-    LOG_
+    ESP_LOGW(TAG, "Failed message setup for Hunter controller: %s", hunter_roam.errorHint(result));
   }
   
 }
 
 void HunterZoneSwitch::turn_on() {
-  if (this->state()) {  // do nothing if we're already in the requested state
-    return;
-  }
-  if (this->off_switch_ != nullptr) {  // latching valve, start a pulse
-    if (!this->on_switch_->state) {
-      this->on_switch_->turn_on();
-    }
-    this->pinned_millis_ = millis();
-  } else if (this->on_switch_ != nullptr) {  // non-latching valve
-    this->on_switch_->turn_on();
-  }
-  this->state_ = true;
-}  
+
+  auto *hunter_roam_ = this->parent_->smartPort;
+  byte a_zone = this->zone_number;
   
+  byte result = hunter_roam.startZone(a_zone, 5);
+  if (result == 0)
+    {
+      this->state_ = false;
+    }
+  else
+  {
+    //errorHint
+    ESP_LOGW(TAG, "Failed message setup for Hunter controller: %s", hunter_roam.errorHint(result));
+  }
+  
+}  
   
   
 void HunterWifiComponent ::setup() {
@@ -62,8 +64,15 @@ void HunterWifiComponent::dump_config() {
   for (size_t valve_number = 0; valve_number < this->number_of_valves(); valve_number++) {
     ESP_LOGCONFIG(TAG, "  Valve %u:", valve_number);
     ESP_LOGCONFIG(TAG, "    Name: %s", this->valve_name(valve_number));
-    ESP_LOGCONFIG(TAG, "    Zone: %u", this->valve_zone(valva_number));
+    ESP_LOGCONFIG(TAG, "    Zone: %u", this->valve_zone(valve_number));
     }
+  }
+}
+  
+void HunterWifiComponent::configure_valve_switch(size_t valve_number, switch_::Switch *valve_switch, uint16_t zone_number) {
+  if (this->is_a_valid_valve(valve_number)) {
+    this->valve_[valve_number].valve_switch.set_on_switch(valve_switch);
+    this->valve_[valve_number].zone_number = zone_number;
   }
 }
 
