@@ -97,7 +97,7 @@ async def to_code(config):
     var = cg.new_Pvariable(hunterwifi_controller[CONF_ID])
     await cg.register_component(var, hunterwifi_controller)
         
-    for valve in hunterwifi_controller[CONF_VALVES]:
+    for valve_index, valve in hunterwifi_controller[CONF_VALVES]:
         sw_valve_var = await switch.new_switch(valve[CONF_ID])
         await cg.register_component(sw_valve_var, valve[CONF_ID])
         cg.add(var.add_valve(sw_valve_var))
