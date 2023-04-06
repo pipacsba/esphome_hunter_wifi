@@ -73,7 +73,7 @@ HUNTERWIFI_VALVE_SCHEMA = cv.Schema(
             key=CONF_NAME,
         ),
         cv.Required(CONF_ID): cv.maybe_simple_value(
-            switch.switch_schema(HunterWifiControllerSwitch),
+            switch.switch_schema(HunterControllerSwitch),
             key=CONF_ID,
         ),
     }
