@@ -14,6 +14,11 @@ namespace hunterwifi {
 class HunterWifiComponent;      // this component
 class HunterZoneSwitch;         // switches representing any valve / zones
 
+struct HunterValve {
+  HunterZoneSwitch valve_switch;
+  uint32_t zone_number;
+}; 
+ 
 class HunterWifiComponent  : public Component {
  public:
   void set_pin(InternalGPIOPin *pin) { pin_ = pin; }
