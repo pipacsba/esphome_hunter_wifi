@@ -34,7 +34,9 @@ class HunterWifiComponent  : public Component {
 
   /// returns a pointer to a valve's switch object
   HunterZoneSwitch *valve_switch(size_t valve_number);
- 
+  /// returns the number of valves the controller is configured with
+  size_t number_of_valves();
+  
  protected:
    /// returns true if valve number is enabled
   bool valve_is_enabled_(size_t valve_number);
