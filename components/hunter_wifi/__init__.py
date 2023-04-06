@@ -101,7 +101,7 @@ async def to_code(config):
         sw_valve_var = await switch.new_switch(valve[CONF_ID])
         await cg.register_component(sw_valve_var, valve[CONF_ID])
         zone_number = int(valve[CONF_NUMBER][CONF_NAME])
-        cg.add(var.add_valve(sw_valve_var, zone_number)
+        cg.add(var.add_valve(sw_valve_var, zone_number))
         
     pin = await cg.gpio_pin_expression(hunterwifi_controller[CONF_PIN])
     cg.add(var.set_pin(pin))
