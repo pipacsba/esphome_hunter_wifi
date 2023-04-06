@@ -15,7 +15,7 @@ class HunterWifiComponent;      // this component
 class HunterZoneSwitch;         // switches representing any valve / zones
 
 struct HunterValve {
-  HunterZoneSwitch valve_switch;
+  HunterZoneSwitch *valve_switch;
   uint16_t zone_number;
 }; 
  
