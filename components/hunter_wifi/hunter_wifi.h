@@ -16,7 +16,7 @@ class HunterZoneSwitch;         // switches representing any valve / zones
 
 struct HunterValve {
   HunterZoneSwitch valve_switch;
-  uint32_t zone_number;
+  uint16_t zone_number;
 }; 
  
 class HunterWifiComponent  : public Component {
@@ -27,11 +27,8 @@ class HunterWifiComponent  : public Component {
   void setup() override;
   void dump_config() override;
   void set_name(const std::string &name) { this->name_ = name; }
-  void add_valve(HunterZoneSwitch *valve_sw); 
+  void add_valve(HunterZoneSwitch *valve_sw, uint16_t zone_number); 
  
-  /// configure a valve's switch object and related zone number.
-  void configure_valve_switch(size_t valve_number, switch_::Switch *valve_switch, uint16_t zone_number);
-
   /// returns a pointer to a valve's switch object
   HunterZoneSwitch *valve_switch(size_t valve_number);
   /// returns the number of valves the controller is configured with
