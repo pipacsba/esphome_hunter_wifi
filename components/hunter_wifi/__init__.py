@@ -123,9 +123,9 @@ async def to_code(config):
         sw_valve_var = await switch.new_switch(valve[CONF_ID])
         await cg.register_component(sw_valve_var, valve[CONF_ID])
         cg.add(sw_valve_var.set_pin(pin))
-        zone_number = int(valve[CONF_NUMBER][CONF_ZONE])
+        zone_number = int(valve[CONF_ZONE][CONF_NAME])
         cg.add(sw_valve_var.set_zone(zone_number))
-        max_duration = int(valve[CONF_NUMBER][CONF_MAX_DURATION])
+        max_duration = int(valve[CONF_MAX_DURATION][CONF_NAME])
         cg.add(sw_valve_var.set_max_duration(max_duration))
         
         cg.add(var.add_valve(sw_valve_var, max_duration, zone_number))
