@@ -85,7 +85,7 @@ void HunterWifiComponent ::setup() {
 
   pin_->setup();
 
-  hunter_roam_ = new HunterRoam(pin_);  // NOLINT(cppcoreguidelines-owning-memory)
+  hunter_roam_ = new HunterRoam(pin_.get_pin());  // NOLINT(cppcoreguidelines-owning-memory)
 }
 
 void HunterWifiComponent::dump_config() {

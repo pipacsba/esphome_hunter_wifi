@@ -22,7 +22,7 @@ struct HunterValve {
  
 class HunterWifiComponent  : public Component {
  public:
-  void set_pin(InternalGPIOPin *pin) { pin_ = pin->get_pin(); }
+  void set_pin(InternalGPIOPin *pin) { pin_ = pin; }
 
   void setup() override;
   void dump_config() override;
