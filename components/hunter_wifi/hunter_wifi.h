@@ -48,7 +48,7 @@ class HunterWifiComponent  : public Component {
 
 class HunterZoneSwitch : public switch_::Switch, public Component {
  public:
-  HunterZoneSwitch();
+  //HunterZoneSwitch();
 
   void setup() override;
   void dump_config() override;
