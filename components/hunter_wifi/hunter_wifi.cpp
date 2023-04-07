@@ -27,9 +27,9 @@ void HunterZoneSwitch::write_state(bool state) {
   byte result;
   
   if (state) {
-    result = hunter_roam.startZone(a_zone, a_duration);
+    result = hunter_roam_.startZone(a_zone, a_duration);
   } else {
-    result = hunter_roam.stopZone(a_zone);
+    result = hunter_roam_.stopZone(a_zone);
   }
   
   if (result == 0)
@@ -39,7 +39,7 @@ void HunterZoneSwitch::write_state(bool state) {
     }
   else
   {
-    ESP_LOGW(TAG, "Failed message setup for Hunter controller: %s", hunter_roam.errorHint(result));
+    ESP_LOGW(TAG, "Failed message setup for Hunter controller: %s", hunter_roam_.errorHint(result));
   }
 }
 

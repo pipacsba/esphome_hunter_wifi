@@ -74,7 +74,7 @@ class HunterZoneSwitch : public switch_::Switch, public Component {
   void dump_config() override;
 
   void set_pin(InternalGPIOPin *pin) { pin_ = pin; }
-  void set_zone(byte *zone) { zone_ = zone; }
+  void set_zone(byte zone) { zone_ = zone; }
   void set_max_duration(byte max_duration) { max_duration_ = max_duration; }
 
   void set_state_lambda(std::function<optional<bool>()> &&f);
