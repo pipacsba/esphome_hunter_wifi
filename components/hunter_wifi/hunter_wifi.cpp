@@ -93,7 +93,7 @@ void HunterWifiComponent::dump_config() {
   LOG_PIN("  Pin: ", this->pin_);
   for (size_t valve_number = 0; valve_number < this->number_of_valves(); valve_number++) {
     ESP_LOGCONFIG(TAG, "  Valve %u:", valve_number);
-    ESP_LOGCONFIG(TAG, "    Name: %s", this->valve_[valve_number].valve_switch->name_);
+    ESP_LOGCONFIG(TAG, "    Name: %s", this->valve_[valve_number].valve_switch.get_name());
     ESP_LOGCONFIG(TAG, "    Zone: %u", this->valve_[valve_number].zone_number);
     }
   }
