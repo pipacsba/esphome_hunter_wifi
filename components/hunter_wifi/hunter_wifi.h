@@ -4,7 +4,6 @@
 #include "esphome/components/switch/switch.h"
 #include "esphome/core/hal.h"
 #include "esphome/components/number/number.h"
-#include "esphome/core/automation.h"
 #include "HunterRoam.h"
 
 #include <vector>
@@ -74,8 +73,6 @@ class HunterZoneSwitch : public switch_::Switch, public Component {
   void dump_config() override;
 
   void set_state_lambda(std::function<optional<bool>()> &&f);
-  Trigger<> *get_turn_on_trigger() const;
-  Trigger<> *get_turn_off_trigger() const;
   void loop() override;
 
   float get_setup_priority() const override;
@@ -84,9 +81,6 @@ class HunterZoneSwitch : public switch_::Switch, public Component {
   void write_state(bool state) override;
 
   optional<std::function<optional<bool>()>> f_;
-  Trigger<> *turn_on_trigger_;
-  Trigger<> *turn_off_trigger_;
-  Trigger<> *prev_trigger_{nullptr};
 };
 
  

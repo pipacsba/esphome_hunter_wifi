@@ -10,40 +10,6 @@ namespace hunterwifi {
 
 static const char *const TAG = "hunterwifi";
   
-//void HunterZoneSwitch::turn_off() {
-//  auto *hunter_roam_ = this->parent_->smartPort;
-//  byte a_zone = (byte) this->zone_number;
-//  
-//  byte result = hunter_roam.stopZone(a_zone);
-//  if (result == 0)
-//    {
-//      this->state_ = false;
-//    }
-//  else
-//  {
-//    //errorHint
-//    ESP_LOGW(TAG, "Failed message setup for Hunter controller: %s", hunter_roam.errorHint(result));
-//  }
-//}
-
-//void HunterZoneSwitch::turn_on() {
-//  auto *hunter_roam_ = this->parent_->smartPort;
-//  byte a_zone = (byte) this->zone_number;
-//  byte result = hunter_roam.startZone(a_zone, 5);
-//  if (result == 0)
-//    {
-//      this->state_ = false;
-//    }
-//  else
-//  {
-//    //errorHint
-//    ESP_LOGW(TAG, "Failed message setup for Hunter controller: %s", hunter_roam.errorHint(result));
-//  }
-//}  
-
-HunterZoneSwitch::HunterZoneSwitch()
-    : turn_on_trigger_(new Trigger<>()), turn_off_trigger_(new Trigger<>()) {}
-    
 void HunterZoneSwitch::loop() {
   if (!this->f_.has_value())
     return;
@@ -55,26 +21,28 @@ void HunterZoneSwitch::loop() {
 }
 
 void HunterZoneSwitch::write_state(bool state) {
-  if (this->prev_trigger_ != nullptr) {
-    this->prev_trigger_->stop_action();
-  }
-
+  auto *hunter_roam_ = this->parent_->parent_->smartPort;
+  byte a_zone = (byte) this->parent_->zone_number;
+  byte result;
+  
   if (state) {
-    this->prev_trigger_ = this->turn_on_trigger_;
-    this->turn_on_trigger_->trigger();
+    result = hunter_roam.startZone(a_zone, 5);
   } else {
-    this->prev_trigger_ = this->turn_off_trigger_;
-    this->turn_off_trigger_->trigger();
+    result = hunter_roam.stopZone(a_zone);
   }
-
-  this->publish_state(state);
+  
+  if (result == 0)
+    {
+      this->publish_state(state);
+    }
+  else
+  {
+    ESP_LOGW(TAG, "Failed message setup for Hunter controller: %s", hunter_roam.errorHint(result));
+  }
 }
 
 void HunterZoneSwitch::set_state_lambda(std::function<optional<bool>()> &&f) { this->f_ = f; }
 float HunterZoneSwitch::get_setup_priority() const { return setup_priority::HARDWARE; }
-
-Trigger<> *HunterZoneSwitch::get_turn_on_trigger() const { return this->turn_on_trigger_; }
-Trigger<> *HunterZoneSwitch::get_turn_off_trigger() const { return this->turn_off_trigger_; }
 
 void HunterZoneSwitch::setup() { this->state = false; }
 
@@ -93,7 +61,7 @@ void HunterWifiComponent::dump_config() {
   LOG_PIN("  Pin: ", this->pin_);
   for (size_t valve_number = 0; valve_number < this->number_of_valves(); valve_number++) {
     ESP_LOGCONFIG(TAG, "  Valve %u:", valve_number);
-    ESP_LOGCONFIG(TAG, "    Name: %s", this->valve_[valve_number].valve_switch->get_name());
+    ESP_LOGCONFIG(TAG, "    Name: %s", this->valve_[valve_number].valve_switch->get_name().c_str());
     ESP_LOGCONFIG(TAG, "    Zone: %u", this->valve_[valve_number].zone_number);
     }
   }
