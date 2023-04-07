@@ -19,8 +19,10 @@ hunter_wifi:
   pin: 16
   valves:
     - id: "lawn_sprinkler_valve_sw0"
-      number: 1
+      zone: 1
+      max_duation: 6
     - id: "lawn_sprinkler_valve_sw1"
-      number: 2
+      zone: 2
+      max_duration: 10
 
 

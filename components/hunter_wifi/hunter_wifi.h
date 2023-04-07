@@ -72,13 +72,29 @@ class HunterZoneSwitch : public switch_::Switch, public Component {
   void setup() override;
   void dump_config() override;
 
+  void set_pin(GPIOPin *pin) { pin_ = pin; }
+  void set_zone(byte *zone) { zone_ = zone; }
+  void set_max_duration(byte max_duration) { max_duration_ = max_duration; }
+
   void set_state_lambda(std::function<optional<bool>()> &&f);
   void loop() override;
 
   float get_setup_priority() const override;
 
  protected:
+  /** Write the given state to hardware. You should implement this
+   * abstract method if you want to create your own switch.
+   *
+   * In the implementation of this method, you should also call
+   * publish_state to acknowledge that the state was written to the hardware.
+   *
+   * @param state The state to write. Inversion is already applied if user specified it.
+   */
   void write_state(bool state) override;
+
+  GPIOPin *pin_;
+  byte zone_;
+  byte max_duration_;
 
   optional<std::function<optional<bool>()>> f_;
 };
