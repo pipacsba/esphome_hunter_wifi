@@ -73,7 +73,7 @@ HUNTERWIFI_VALVE_SCHEMA = cv.Schema(
                 }
             ).extend(cv.COMPONENT_SCHEMA),
             validate_min_max,
-            key=CONF_ZONE,
+            key=CONF_NAME,
         ),
         cv.Required(CONF_MAX_DURATION): cv.maybe_simple_value(
             number.NUMBER_SCHEMA.extend(
@@ -89,7 +89,7 @@ HUNTERWIFI_VALVE_SCHEMA = cv.Schema(
                 }
             ).extend(cv.COMPONENT_SCHEMA),
             validate_min_max,
-            key=CONF_MAX_DURATION,
+            key=CONF_NAME,
         ),
         cv.Required(CONF_ID): cv.maybe_simple_value(
             switch.switch_schema(HunterZoneSwitch),
