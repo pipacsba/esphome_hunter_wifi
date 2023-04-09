@@ -24,7 +24,7 @@ CODEOWNERS = ["pipacsba"]
 
 CONF_VALVES = "valves"
 CONF_ZONE = "zone"
-CONF_MAX_DURATION = "max_duration"
+CONF_MAX_DURATION_MINUTES = "max_duration_minutes"
 
 hunterwifi_ns = cg.esphome_ns.namespace("hunterwifi")
 HunterWifiComponent = hunterwifi_ns.class_("HunterWifiComponent", cg.Component)
@@ -53,44 +53,14 @@ def validate_hunterwifi(config):
             raise cv.Invalid(f"{CONF_ID} is required for each valve")
         if CONF_ZONE not in valve:
             raise cv.Invalid(f"{CONF_ZONE} is required for each valve")
-        if CONF_MAX_DURATION not in valve:
-            raise cv.Invalid(f"{CONF_MAX_DURATION} is required for each valve")
+        if CONF_MAX_DURATION_MINUTES not in valve:
+            raise cv.Invalid(f"{CONF_MAX_DURATION_MINUTES} is required for each valve")
     return config
 
 HUNTERWIFI_VALVE_SCHEMA = cv.Schema(
     {
-        cv.Required(CONF_ZONE): cv.maybe_simple_value(
-            number.NUMBER_SCHEMA.extend(
-                {
-                    cv.Optional(
-                        CONF_ENTITY_CATEGORY, default=ENTITY_CATEGORY_CONFIG
-                    ): cv.entity_category,
-                    cv.Optional(CONF_INITIAL_VALUE, default=1): cv.positive_int,
-                    cv.Optional(CONF_MAX_VALUE, default=48): cv.positive_int,
-                    cv.Optional(CONF_MIN_VALUE, default=1): cv.positive_int,
-                    cv.Optional(CONF_RESTORE_VALUE, default=True): cv.boolean,
-                    cv.Optional(CONF_STEP, default=1): cv.positive_int,
-                }
-            ).extend(cv.COMPONENT_SCHEMA),
-            validate_min_max,
-            key=CONF_NAME,
-        ),
-        cv.Required(CONF_MAX_DURATION): cv.maybe_simple_value(
-            number.NUMBER_SCHEMA.extend(
-                {
-                    cv.Optional(
-                        CONF_ENTITY_CATEGORY, default=ENTITY_CATEGORY_CONFIG
-                    ): cv.entity_category,
-                    cv.Optional(CONF_INITIAL_VALUE, default=1): cv.positive_int,
-                    cv.Optional(CONF_MAX_VALUE, default=240): cv.positive_int,
-                    cv.Optional(CONF_MIN_VALUE, default=1): cv.positive_int,
-                    cv.Optional(CONF_RESTORE_VALUE, default=True): cv.boolean,
-                    cv.Optional(CONF_STEP, default=1): cv.positive_int,
-                }
-            ).extend(cv.COMPONENT_SCHEMA),
-            validate_min_max,
-            key=CONF_NAME,
-        ),
+        cv.Required(CONF_ZONE): cv.int_range(1, 48),
+        cv.Required(CONF_MAX_DURATION_MINUTES): cv.int_range(1, 240),
         cv.Required(CONF_ID): cv.maybe_simple_value(
             switch.switch_schema(HunterZoneSwitch),
             key=CONF_ID,
@@ -130,10 +100,10 @@ async def to_code(config):
         #add pin number to the switch
         cg.add(sw_valve_var.set_pin(pin))
         #add zone number to the switch
-        zone_number = int(valve[CONF_ZONE][CONF_NAME])
+        zone_number = int(valve[CONF_ZONE])
         cg.add(sw_valve_var.set_zone(zone_number))
         #add max duration to the switch
-        max_duration = int(valve[CONF_MAX_DURATION][CONF_NAME])
+        max_duration = int(valve[CONF_MAX_DURATION_MINUTES])
         cg.add(sw_valve_var.set_max_duration(max_duration))
         
         #add valve to hunterwifi controller
