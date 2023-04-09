@@ -7,8 +7,7 @@ The goal of this project to find a way to integrate ecodina/hunter-wifi project 
 Given that [Sebastien](https://github.com/seb821/OpenSprinkler-Firmware-Hunter) and [Ecodina](https://github.com/ecodina/hunter-wifi) published their code under the GNU GPL v3, this project follows the same license.
 
     Hunter Roam - WiFi
-    Copyright (C) 2020-2022  Eloi Codina Torras
-    
+        
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
