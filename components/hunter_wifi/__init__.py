@@ -137,7 +137,7 @@ async def to_code(config):
         cg.add(sw_valve_var.set_max_duration(max_duration))
         
         #add valve to hunterwifi controller
-        cg.add(var.add_valve(sw_valve_var, max_duration, zone_number))
+        cg.add(var.add_valve(sw_valve_var, zone_number, max_duration))
         
 
   # this is only valid for multiple hunterwifi controllers
