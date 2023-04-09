@@ -14,19 +14,21 @@ namespace hunterwifi {
 class HunterWifiComponent;      // this component
 class HunterZoneSwitch;         // switches representing any valve / zones
 
+// define struct for zone valves
 struct HunterValve {
   HunterZoneSwitch *valve_switch;
   uint16_t zone_number;
   uint16_t max_duration;
 }; 
  
+//main hunterwifi component (controller)
+//this also maybe not even needed, not used for anything
 class HunterWifiComponent  : public Component {
  public:
+  // add pin
   void set_pin(InternalGPIOPin *pin) { pin_ = pin; }
-
   void setup() override;
   void dump_config() override;
-  //void set_name(const std::string &name) { this->name_ = name; }
   void add_valve(HunterZoneSwitch *valve_sw, uint16_t zone_number, uint16_t max_duration); 
  
   /// returns a pointer to a valve's switch object
@@ -46,17 +48,21 @@ class HunterWifiComponent  : public Component {
 
 };
 
+//create switch for zones
 class HunterZoneSwitch : public switch_::Switch, public Component {
  public:
   //HunterZoneSwitch();
 
   void setup() override;
   void dump_config() override;
-
+  //define pin number to use for REM communication
   void set_pin(InternalGPIOPin *pin) { pin_ = pin; }
+  //define the zone number as used in Huner device pinout
   void set_zone(byte zone) { zone_ = zone; }
+  //set maximum zone sprinkler duration
   void set_max_duration(byte max_duration) { max_duration_ = max_duration; }
-
+  
+  //flexibility is everythin
   void set_state_lambda(std::function<optional<bool>()> &&f);
   void loop() override;
 

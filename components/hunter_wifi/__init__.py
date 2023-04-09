@@ -113,25 +113,36 @@ CONFIG_SCHEMA = cv.All(
 
 async def to_code(config):
   for hunterwifi_controller in config:
+    # create and registaer hunterwifi controller
     var = cg.new_Pvariable(hunterwifi_controller[CONF_ID])
     await cg.register_component(var, hunterwifi_controller)
-
+    
+    #create pin
     pin = await cg.gpio_pin_expression(hunterwifi_controller[CONF_PIN])
+    #add pin to hunterwifi controller
     cg.add(var.set_pin(pin))
         
+    # for each valve
     for valve_index, valve in enumerate(hunterwifi_controller[CONF_VALVES]):
+        # create a switch with the defined name
         sw_valve_var = await switch.new_switch(valve[CONF_ID])
         await cg.register_component(sw_valve_var, valve[CONF_ID])
+        #add pin number to the switch
         cg.add(sw_valve_var.set_pin(pin))
+        #add zone number to the switch
         zone_number = int(valve[CONF_ZONE][CONF_NAME])
         cg.add(sw_valve_var.set_zone(zone_number))
+        #add max duration to the switch
         max_duration = int(valve[CONF_MAX_DURATION][CONF_NAME])
         cg.add(sw_valve_var.set_max_duration(max_duration))
         
+        #add valve to hunterwifi controller
         cg.add(var.add_valve(sw_valve_var, max_duration, zone_number))
         
 
-        
+  # this is only valid for multiple hunterwifi controllers
+  # let the hunterwificontroller know about each other
+  # not tested functionality, and maybe no even needed as there is no hunterwifi main switch
   for hunterwifi_controller in config:
       var = await cg.get_variable(hunterwifi_controller[CONF_ID])
       for controller_to_add in config:
