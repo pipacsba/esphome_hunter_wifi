@@ -38,6 +38,7 @@ void HunterZoneSwitch::write_state(bool state) {
     {
       //Acknowledge change
       this->publish_state(state);
+      ESP_LOGW(TAG, "Message setup for Hunter controller is successfull");
     }
   else
   {
@@ -78,6 +79,7 @@ void HunterWifiComponent::add_valve(HunterZoneSwitch  *valve_sw, uint16_t zone_n
   new_valve->valve_switch = valve_sw;
   new_valve->zone_number = zone_number;
   new_valve->max_duration = max_duration;
+  ESP_LOGW(TAG, "Valve added: %d", zone_number);
 }
 
 size_t HunterWifiComponent::number_of_valves() { return this->valve_.size(); }
