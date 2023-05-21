@@ -23,6 +23,7 @@ void HunterZoneSwitch::loop() {
 
 //send REM message in case of switch representing a zone is switched (changes state)
 void HunterZoneSwitch::write_state(bool state) {
+  ESP_LOGW(TAG, "Message setup for Hunter controller is satrted on pin %d",pin_->get_pin());
   hunter_roam_ = new HunterRoam(pin_->get_pin());  // NOLINT(cppcoreguidelines-owning-memory)
   byte a_zone = zone_;
   byte a_duration = max_duration_;
