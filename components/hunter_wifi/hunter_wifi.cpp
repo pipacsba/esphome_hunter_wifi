@@ -27,7 +27,12 @@ void HunterZoneSwitch::write_state(bool state) {
   hunter_roam_ = new HunterRoam(pin_->get_pin());  // NOLINT(cppcoreguidelines-owning-memory)
   byte a_zone = zone_;
   byte a_duration = max_duration_;
-  byte b_duration =  EntityBase::get_object_id(duration_id_).state;
+  byte b_duration = 240;
+  for (number::Number *obj : App.get_numbers()) {
+    if (obj->get_object_id() != duration_id_)
+      continue;
+    b_duration = obj->state;
+  }
   byte duration = min(a_duration, b_duration);
   byte result;
     
