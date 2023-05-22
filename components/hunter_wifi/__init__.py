@@ -25,6 +25,7 @@ CODEOWNERS = ["pipacsba"]
 CONF_VALVES = "valves"
 CONF_ZONE = "zone"
 CONF_MAX_DURATION_MINUTES = "max_duration_minutes"
+CONF_DURATION_NUMBER_ID = "duration_id"
 
 hunterwifi_ns = cg.esphome_ns.namespace("hunterwifi")
 HunterWifiComponent = hunterwifi_ns.class_("HunterWifiComponent", cg.Component)
@@ -65,6 +66,7 @@ HUNTERWIFI_VALVE_SCHEMA = cv.Schema(
             switch.switch_schema(HunterZoneSwitch),
             key=CONF_ID,
         ),
+        cv.Optional(CONF_DURATION_NUMBER_ID, default = "None"): cv.string,
     }
 )
 
@@ -105,9 +107,12 @@ async def to_code(config):
         #add max duration to the switch
         max_duration = int(valve[CONF_MAX_DURATION_MINUTES])
         cg.add(sw_valve_var.set_max_duration(max_duration))
+        #add duration number id to the switch
+        duration_id = valve[CONF_DURATION_NUMBER_ID]
+        cg.add(sw_valve_var.set_duration_number_id(duration_id)
         
         #add valve to hunterwifi controller
-        cg.add(var.add_valve(sw_valve_var, zone_number, max_duration))
+        cg.add(var.add_valve(sw_valve_var, zone_number, max_duration, duration_id))
         
 
   # this is only valid for multiple hunterwifi controllers
