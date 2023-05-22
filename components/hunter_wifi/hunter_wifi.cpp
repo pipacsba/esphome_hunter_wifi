@@ -29,8 +29,8 @@ void HunterZoneSwitch::write_state(bool state) {
   byte a_duration = max_duration_;
   byte b_duration = 240;
   for (number::Number *obj : App.get_numbers()) {
-    if (obj->get_name() != duration_id_)
-      ESP_LOGW(TAG, "%s do not match %s", obj->get_name(), duration_id_);
+    if (obj->get_name().c_str() != duration_id_)
+      ESP_LOGW(TAG, "%s do not match %s", obj->get_name().c_str(), duration_id_);
       continue;
     b_duration = obj->state;
     ESP_LOGW(TAG, "Requested duration for Hunter controller for zone %d for %d minutes.", a_zone, b_duration);
