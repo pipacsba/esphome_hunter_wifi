@@ -26,7 +26,7 @@ void HunterZoneSwitch::write_state(bool state) {
   hunter_roam_ = new HunterRoam(pin_->get_pin());  // NOLINT(cppcoreguidelines-owning-memory)
   byte a_zone = zone_;
   byte a_duration = max_duration_;
-  byte b_duration =  id(duration_id).state;
+  byte b_duration =  id(duration_id_).state;
   byte duration = min(a_duration, b_duration);
   byte result;
     
