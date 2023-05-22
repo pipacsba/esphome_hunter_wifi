@@ -26,11 +26,13 @@ void HunterZoneSwitch::write_state(bool state) {
   hunter_roam_ = new HunterRoam(pin_->get_pin());  // NOLINT(cppcoreguidelines-owning-memory)
   byte a_zone = zone_;
   byte a_duration = max_duration_;
+  byte b_duration =  id(duration_id).state;
+  byte duration = min(a_duration, b_duration);
   byte result;
     
   if (state) {
-    result = hunter_roam_->startZone(a_zone, a_duration);
-    ESP_LOGW(TAG, "Message setup for Hunter controller is started on pin %d for zone %d for %d mnutes.",pin_->get_pin(), a_zone, a_duration);
+    result = hunter_roam_->startZone(a_zone, duration);
+    ESP_LOGW(TAG, "Message setup for Hunter controller is started on pin %d for zone %d for %d mnutes.",pin_->get_pin(), a_zone, duration);
   } else {
     result = hunter_roam_->stopZone(a_zone);
     ESP_LOGW(TAG, "Message setup for Hunter controller is started on pin %d to stop zone %d.",pin_->get_pin(), a_zone);
