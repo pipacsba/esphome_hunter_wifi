@@ -73,7 +73,7 @@ void HunterWifiComponent::dump_config() {
   }
   
 // add valves to the component
-void HunterWifiComponent::add_valve(HunterZoneSwitch  *valve_sw, uint16_t zone_number, uint16_t max_duration) {
+void HunterWifiComponent::add_valve(HunterZoneSwitch  *valve_sw, uint16_t zone_number, uint16_t max_duration, string duration_id) {
   auto new_valve_number = this->number_of_valves();
   this->valve_.resize(new_valve_number + 1);
   HunterValve *new_valve = &this->valve_[new_valve_number];
@@ -81,6 +81,7 @@ void HunterWifiComponent::add_valve(HunterZoneSwitch  *valve_sw, uint16_t zone_n
   new_valve->valve_switch = valve_sw;
   new_valve->zone_number = zone_number;
   new_valve->max_duration = max_duration;
+  new_valve->duration_id = duration_id;
   ESP_LOGW(TAG, "Valve added: %d", zone_number);
 }
 
