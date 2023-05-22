@@ -40,7 +40,9 @@ hunter_wifi:
     - id: "lawn_sprinkler_valve_sw0"
       zone: 1
       max_duration: 10
+      duration_id: "lawn_sprinkler_valve_sw0_run_minutes"
     - id: "lawn_sprinkler_valve_sw1"
       zone: 2
       max_duration: 8
+      duration_id: "lawn_sprinkler_valve_sw1_run_minutes"
 
