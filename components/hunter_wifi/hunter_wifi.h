@@ -19,7 +19,7 @@ struct HunterValve {
   HunterZoneSwitch *valve_switch;
   uint16_t zone_number;
   uint16_t max_duration;
-  string duration_id;
+  const char* duration_id;
 }; 
  
 //main hunterwifi component (controller)
@@ -30,7 +30,7 @@ class HunterWifiComponent  : public Component {
   void set_pin(InternalGPIOPin *pin) { pin_ = pin; }
   void setup() override;
   void dump_config() override;
-  void add_valve(HunterZoneSwitch *valve_sw, uint16_t zone_number, uint16_t max_duration, string duration_id); 
+  void add_valve(HunterZoneSwitch *valve_sw, uint16_t zone_number, uint16_t max_duration, const char* duration_id); 
  
   /// returns a pointer to a valve's switch object
   HunterZoneSwitch *valve_switch(size_t valve_number);
@@ -63,7 +63,7 @@ class HunterZoneSwitch : public switch_::Switch, public Component {
   //set maximum zone sprinkler duration
   void set_max_duration(byte max_duration) { max_duration_ = max_duration; }
   //set duration number id
-  void set_duration_number_id(string duration_id) {duration_id_ = duration_id;}
+  void set_duration_number_id(const char* duration_id) {duration_id_ = duration_id;}
   
   //flexibility is everythin
   void set_state_lambda(std::function<optional<bool>()> &&f);
@@ -86,7 +86,7 @@ class HunterZoneSwitch : public switch_::Switch, public Component {
   HunterRoam *hunter_roam_;
   byte zone_;
   byte max_duration_;
-  string duration_id_;
+  const char* duration_id_;
 
   optional<std::function<optional<bool>()>> f_;
 };
