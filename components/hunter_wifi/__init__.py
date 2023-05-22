@@ -109,7 +109,7 @@ async def to_code(config):
         cg.add(sw_valve_var.set_max_duration(max_duration))
         #add duration number id to the switch
         duration_id = valve[CONF_DURATION_NUMBER_ID]
-        cg.add(sw_valve_var.set_duration_number_id(duration_id)
+        cg.add(sw_valve_var.set_duration_number_id(duration_id))
         
         #add valve to hunterwifi controller
         cg.add(var.add_valve(sw_valve_var, zone_number, max_duration, duration_id))
