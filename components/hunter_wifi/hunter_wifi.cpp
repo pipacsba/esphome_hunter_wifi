@@ -1,5 +1,6 @@
 #include "hunter_wifi.h"
 
+#include "esphome/core/entity_base.h"
 #include "esphome/core/application.h"
 #include "esphome/core/helpers.h"
 #include "esphome/core/log.h"
@@ -26,7 +27,7 @@ void HunterZoneSwitch::write_state(bool state) {
   hunter_roam_ = new HunterRoam(pin_->get_pin());  // NOLINT(cppcoreguidelines-owning-memory)
   byte a_zone = zone_;
   byte a_duration = max_duration_;
-  byte b_duration =  id(duration_id_).state;
+  byte b_duration =  get_object_id(duration_id_).state;
   byte duration = min(a_duration, b_duration);
   byte result;
     
