@@ -19,6 +19,7 @@ struct HunterValve {
   HunterZoneSwitch *valve_switch;
   uint16_t zone_number;
   uint16_t max_duration;
+  string duration_id;
 }; 
  
 //main hunterwifi component (controller)
