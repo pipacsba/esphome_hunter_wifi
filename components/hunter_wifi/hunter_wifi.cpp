@@ -69,6 +69,7 @@ void HunterWifiComponent::dump_config() {
     ESP_LOGCONFIG(TAG, "    Name: %s", this->valve_[valve_number].valve_switch->get_name().c_str());
     ESP_LOGCONFIG(TAG, "    Zone: %u", this->valve_[valve_number].zone_number);
     ESP_LOGCONFIG(TAG, "    Max_Duration: %u", this->valve_[valve_number].max_duration);
+    ESP_LOGCONFIG(TAG, "    Duration Number ID: %s", this->valve_[valve_number].duration_id);
     }
   }
   
