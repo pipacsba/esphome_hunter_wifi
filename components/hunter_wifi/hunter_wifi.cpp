@@ -33,26 +33,26 @@ void HunterZoneSwitch::write_state(bool state) {
     byte b_duration = 240;
     for (number::Number *obj : App.get_numbers()) {
       if (obj->get_name().c_str() != duration_number_name_) {
-        ESP_LOGW(TAG, "%s do not match %s", obj->get_name().c_str(), duration_number_name_);
+        ESP_LOGVV(TAG, "%s do not match %s", obj->get_name().c_str(), duration_number_name_);
         continue;
       }
       b_duration = obj->state;
-      ESP_LOGW(TAG, "Requested duration for Hunter controller for zone %d for %d minutes.", a_zone, b_duration);
+      ESP_LOGVV(TAG, "Requested duration for Hunter controller for zone %d for %d minutes.", a_zone, b_duration);
     }
     byte duration = min(a_duration, b_duration);
     
     result = hunter_roam_->startZone(a_zone, duration);
-    ESP_LOGW(TAG, "Message setup for Hunter controller is started on pin %d for zone %d for %d minutes.",pin_->get_pin(), a_zone, duration);
+    ESP_LOGVV(TAG, "Message setup for Hunter controller is started on pin %d for zone %d for %d minutes.",pin_->get_pin(), a_zone, duration);
   } else {
     result = hunter_roam_->stopZone(a_zone);
-    ESP_LOGW(TAG, "Message setup for Hunter controller is started on pin %d to stop zone %d.",pin_->get_pin(), a_zone);
+    ESP_LOGVV(TAG, "Message setup for Hunter controller is started on pin %d to stop zone %d.",pin_->get_pin(), a_zone);
   }
   
   if (result == 0)
     {
       //Acknowledge change
       this->publish_state(state);
-      ESP_LOGW(TAG, "Message setup for Hunter controller is successfull");
+      ESP_LOGVV(TAG, "Message setup for Hunter controller is successfull");
     }
   else
   {
