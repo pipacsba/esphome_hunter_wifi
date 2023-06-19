@@ -33,7 +33,8 @@ void HunterZoneSwitch::write_state(bool state) {
     byte a_duration = max_duration_;
     byte b_duration = 240;
     //for (number::Number *obj : App.get_numbers()) {
-    if (this->duration_number_name_):
+    if (this->duration_number_name_)
+    {
       //if (obj->get_name().c_str() != duration_number_name_) {
       //  ESP_LOGVV(TAG, "%s do not match %s", obj->get_name().c_str(), duration_number_name_);
       // continue;
