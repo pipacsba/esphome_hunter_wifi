@@ -112,7 +112,7 @@ async def to_code(config):
             duration_number_name = await cg.get_variable(valve[CONF_DURATION_NUMBER_NAME])
             cg.add(sw_valve_var.set_duration_number_name(duration_number_name))
         
-             cg.add(var.add_valve(sw_valve_var, zone_number, max_duration, duration_number_name))
+            cg.add(var.add_valve(sw_valve_var, zone_number, max_duration, duration_number_name))
         else:
             cg.add(var.add_valve(sw_valve_var, zone_number, max_duration))
         
