@@ -1,4 +1,4 @@
-::Name#pragma once
+#pragma once
 
 #include "esphome/core/component.h"
 #include "esphome/components/switch/switch.h"
