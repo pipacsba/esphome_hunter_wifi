@@ -1,7 +1,7 @@
 import esphome.codegen as cg
 import esphome.config_validation as cv
 from esphome import pins
-from esphome.components import number # ez valoszinu nem fog kelleni
+from esphome.components import number
 from esphome.components import switch
 from esphome.const import (
     CONF_ID, 
@@ -66,7 +66,7 @@ HUNTERWIFI_VALVE_SCHEMA = cv.Schema(
             switch.switch_schema(HunterZoneSwitch),
             key=CONF_ID,
         ),
-        cv.Optional(CONF_DURATION_NUMBER_NAME, default = "None"): cv.string,
+        cv.Optional(CONF_DURATION_NUMBER_NAME): : cv.use_id(number.Number),
     }
 )
 
@@ -108,11 +108,13 @@ async def to_code(config):
         max_duration = int(valve[CONF_MAX_DURATION_MINUTES])
         cg.add(sw_valve_var.set_max_duration(max_duration))
         #add duration number id to the switch
-        duration_number_name = valve[CONF_DURATION_NUMBER_NAME]
-        cg.add(sw_valve_var.set_duration_number_name(duration_number_name))
+        if CONF_DURATION_NUMBER_NAME in valve:
+            duration_number_name = await cg.get_variable(valve[CONF_DURATION_NUMBER_NAME])
+            cg.add(sw_valve_var.set_duration_number_name(duration_number_name))
         
-        #add valve to hunterwifi controller
-        cg.add(var.add_valve(sw_valve_var, zone_number, max_duration, duration_number_name))
+             cg.add(var.add_valve(sw_valve_var, zone_number, max_duration, duration_number_name))
+        else:
+            cg.add(var.add_valve(sw_valve_var, zone_number, max_duration))
         
 
   # this is only valid for multiple hunterwifi controllers
