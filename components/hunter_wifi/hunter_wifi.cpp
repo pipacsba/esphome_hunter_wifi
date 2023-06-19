@@ -33,7 +33,7 @@ void HunterZoneSwitch::write_state(bool state) {
     byte a_duration = max_duration_;
     byte b_duration = 240;
     //for (number::Number *obj : App.get_numbers()) {
-    if (this->duration_number_name_ != nullptr):
+    if (this->duration_number_name_):
       //if (obj->get_name().c_str() != duration_number_name_) {
       //  ESP_LOGVV(TAG, "%s do not match %s", obj->get_name().c_str(), duration_number_name_);
       // continue;
@@ -84,7 +84,7 @@ void HunterWifiComponent::dump_config() {
     ESP_LOGCONFIG(TAG, "    Name: %s", this->valve_[valve_number].valve_switch->get_name().c_str());
     ESP_LOGCONFIG(TAG, "    Zone: %u", this->valve_[valve_number].zone_number);
     ESP_LOGCONFIG(TAG, "    Max_Duration: %u", this->valve_[valve_number].max_duration);
-    if (this->valve_[valve_number].duration_number_name != nullptr)
+    if (this->valve_[valve_number].duration_number_name)
     {
       ESP_LOGCONFIG(TAG, "    Duration Number Name: %s", this->valve_[valve_number].duration_number_name->get_name().c_str());
     }
