@@ -64,7 +64,7 @@ class HunterZoneSwitch : public switch_::Switch, public Component {
   //set maximum zone sprinkler duration
   void set_max_duration(byte max_duration) { max_duration_ = max_duration; }
   //set duration number id
-  void set_duration_number_name(const char* duration_number_name) {duration_number_name_ = duration_number_name;}
+  void set_duration_number_name(number::Number *duration_number_name) {duration_number_name_ = duration_number_name;}
   
   //flexibility is everythin
   void set_state_lambda(std::function<optional<bool>()> &&f);
@@ -87,7 +87,7 @@ class HunterZoneSwitch : public switch_::Switch, public Component {
   HunterRoam *hunter_roam_;
   byte zone_;
   byte max_duration_;
-  const char* duration_number_name_;
+  number::Number *duration_number_name_{nullptr};
 
   optional<std::function<optional<bool>()>> f_;
 };
