@@ -66,7 +66,7 @@ HUNTERWIFI_VALVE_SCHEMA = cv.Schema(
             switch.switch_schema(HunterZoneSwitch),
             key=CONF_ID,
         ),
-        cv.Optional(CONF_DURATION_NUMBER_NAME): : cv.use_id(number.Number),
+        cv.Optional(CONF_DURATION_NUMBER_NAME): cv.use_id(number.Number),
     }
 )
 
