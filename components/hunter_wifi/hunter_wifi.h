@@ -1,4 +1,4 @@
-#pragma once
+::Name#pragma once
 
 #include "esphome/core/component.h"
 #include "esphome/components/switch/switch.h"
@@ -19,7 +19,7 @@ struct HunterValve {
   HunterZoneSwitch *valve_switch;
   uint16_t zone_number;
   uint16_t max_duration;
-  const char* duration_number_name;
+  number::Number *duration_number_name{nullptr};
 }; 
  
 //main hunterwifi component (controller)
@@ -30,7 +30,8 @@ class HunterWifiComponent  : public Component {
   void set_pin(InternalGPIOPin *pin) { pin_ = pin; }
   void setup() override;
   void dump_config() override;
-  void add_valve(HunterZoneSwitch *valve_sw, uint16_t zone_number, uint16_t max_duration, const char* duration_number_name); 
+  void add_valve(HunterZoneSwitch *valve_sw, uint16_t zone_number, uint16_t max_duration, number:Number *duration_number_name); 
+  void add_valve(HunterZoneSwitch *valve_sw, uint16_t zone_number, uint16_t max_duration); 
  
   /// returns a pointer to a valve's switch object
   HunterZoneSwitch *valve_switch(size_t valve_number);
