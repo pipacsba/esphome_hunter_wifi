@@ -2,6 +2,7 @@
 
 #include "esphome/core/entity_base.h"
 #include "esphome/core/application.h"
+#include "esphome/components/number/number.h"
 #include "esphome/core/helpers.h"
 #include "esphome/core/log.h"
 #include <utility>
@@ -31,12 +32,14 @@ void HunterZoneSwitch::write_state(bool state) {
   if (state) {
     byte a_duration = max_duration_;
     byte b_duration = 240;
-    for (number::Number *obj : App.get_numbers()) {
-      if (obj->get_name().c_str() != duration_number_name_) {
-        ESP_LOGVV(TAG, "%s do not match %s", obj->get_name().c_str(), duration_number_name_);
-        continue;
-      }
-      b_duration = obj->state;
+    //for (number::Number *obj : App.get_numbers()) {
+    if (this->duration_number_name_ != nullptr):
+      //if (obj->get_name().c_str() != duration_number_name_) {
+      //  ESP_LOGVV(TAG, "%s do not match %s", obj->get_name().c_str(), duration_number_name_);
+      // continue;
+      //}
+      //b_duration = obj->state;
+      b_duration = (byte) this->duration_number_name_->state;
       ESP_LOGVV(TAG, "Requested duration for Hunter controller for zone %d for %d minutes.", a_zone, b_duration);
     }
     byte duration = min(a_duration, b_duration);
@@ -81,12 +84,15 @@ void HunterWifiComponent::dump_config() {
     ESP_LOGCONFIG(TAG, "    Name: %s", this->valve_[valve_number].valve_switch->get_name().c_str());
     ESP_LOGCONFIG(TAG, "    Zone: %u", this->valve_[valve_number].zone_number);
     ESP_LOGCONFIG(TAG, "    Max_Duration: %u", this->valve_[valve_number].max_duration);
-    ESP_LOGCONFIG(TAG, "    Duration Number Name: %s", this->valve_[valve_number].duration_number_name);
+    if (this->valve_[valve_number].duration_number_name != nullptr)
+    {
+      ESP_LOGCONFIG(TAG, "    Duration Number Name: %s", this->valve_[valve_number].duration_number_name->get_name().c_str());
     }
   }
+}
   
 // add valves to the component
-void HunterWifiComponent::add_valve(HunterZoneSwitch  *valve_sw, uint16_t zone_number, uint16_t max_duration, const char* duration_number_name) {
+void HunterWifiComponent::add_valve(HunterZoneSwitch  *valve_sw, uint16_t zone_number, uint16_t max_duration, number::Number *duration_number_name) {
   auto new_valve_number = this->number_of_valves();
   this->valve_.resize(new_valve_number + 1);
   HunterValve *new_valve = &this->valve_[new_valve_number];
@@ -97,6 +103,19 @@ void HunterWifiComponent::add_valve(HunterZoneSwitch  *valve_sw, uint16_t zone_n
   new_valve->duration_number_name = duration_number_name;
   ESP_LOGW(TAG, "Valve added: %d", zone_number);
 }
+
+// add valves to the component
+void HunterWifiComponent::add_valve(HunterZoneSwitch  *valve_sw, uint16_t zone_number, uint16_t max_duration) {
+  auto new_valve_number = this->number_of_valves();
+  this->valve_.resize(new_valve_number + 1);
+  HunterValve *new_valve = &this->valve_[new_valve_number];
+
+  new_valve->valve_switch = valve_sw;
+  new_valve->zone_number = zone_number;
+  new_valve->max_duration = max_duration;
+  ESP_LOGW(TAG, "Valve added: %d", zone_number);
+}
+
 
 size_t HunterWifiComponent::number_of_valves() { return this->valve_.size(); }
 
