@@ -60,7 +60,7 @@ void HunterZoneSwitch::write_state(bool state) {
     }
   else
   {
-    ESP_LOGW(TAG, "Failed message setup for Hunter controller: %s", hunter_roam_->errorHint(result));
+    ESP_LOGW(TAG, "Failed message setup for Hunter controller: %s", hunter_roam_->errorHint(result).c_str());
   }
 }
 
