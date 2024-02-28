@@ -60,9 +60,9 @@ class HunterZoneSwitch : public switch_::Switch, public Component {
   //define pin number to use for REM communication
   void set_pin(InternalGPIOPin *pin) { pin_ = pin; }
   //define the zone number as used in Huner device pinout
-  void set_zone(byte zone) { zone_ = zone; }
+  void set_zone(uint8_t zone) { zone_ = zone; }
   //set maximum zone sprinkler duration
-  void set_max_duration(byte max_duration) { max_duration_ = max_duration; }
+  void set_max_duration(uint8_t max_duration) { max_duration_ = max_duration; }
   //set duration number id
   void set_duration_number_name(number::Number *duration_number_name) {duration_number_name_ = duration_number_name;}
   
@@ -85,8 +85,8 @@ class HunterZoneSwitch : public switch_::Switch, public Component {
 
   InternalGPIOPin *pin_;
   HunterRoam *hunter_roam_;
-  byte zone_;
-  byte max_duration_;
+  uint8_t zone_;
+  uint8_t max_duration_;
   number::Number *duration_number_name_{nullptr};
 
   optional<std::function<optional<bool>()>> f_;
