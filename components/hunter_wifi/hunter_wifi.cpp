@@ -26,12 +26,12 @@ void HunterZoneSwitch::loop() {
 //send REM message in case of switch representing a zone is switched (changes state)
 void HunterZoneSwitch::write_state(bool state) {
   hunter_roam_ = new HunterRoam(pin_->get_pin());  // NOLINT(cppcoreguidelines-owning-memory)
-  byte a_zone = zone_;
-  byte result;
+  uint8_t a_zone = zone_;
+  uint8_t result;
     
   if (state) {
-    byte a_duration = max_duration_;
-    byte b_duration = 240;
+    uint8_t a_duration = max_duration_;
+    uint8_t b_duration = 240;
     //for (number::Number *obj : App.get_numbers()) {
     if (this->duration_number_name_)
     {
@@ -40,10 +40,10 @@ void HunterZoneSwitch::write_state(bool state) {
       // continue;
       //}
       //b_duration = obj->state;
-      b_duration = (byte) this->duration_number_name_->state;
+      b_duration = (uint8_t) this->duration_number_name_->state;
       ESP_LOGVV(TAG, "Requested duration for Hunter controller for zone %d for %d minutes.", a_zone, b_duration);
     }
-    byte duration = min(a_duration, b_duration);
+    uint8_t duration = min(a_duration, b_duration);
     
     result = hunter_roam_->startZone(a_zone, duration);
     ESP_LOGVV(TAG, "Message setup for Hunter controller is started on pin %d for zone %d for %d minutes.",pin_->get_pin(), a_zone, duration);
