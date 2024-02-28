@@ -14,15 +14,15 @@
 class HunterRoam {
     public:
         HunterRoam(int pin);
-        byte stopZone(byte zone);
-        byte startZone(byte zone, byte time);
-        byte startProgram(byte num);
-        String errorHint(byte error);
+        uint8_t stopZone(uint8_t zone);
+        uint8_t startZone(uint8_t zone, uint8_t time);
+        uint8_t startProgram(uint8_t num);
+        String errorHint(uint8_t error);
     
     private:
         int _pin;
-        void hunterBitfield(std::vector <byte> &bits, byte pos, byte val, byte len);
-        void writeBus(std::vector<byte> buffer, bool extrabit);
+        void hunterBitfield(std::vector <uint8_t> &bits, uint8_t pos, uint8_t val, uint8_t len);
+        void writeBus(std::vector<uint8_t> buffer, bool extrabit);
         void sendLow(void);
         void sendHigh(void);
 };
