@@ -146,7 +146,7 @@ size_t HunterWifiComponent::number_of_valves() { return this->valve_.size(); }
  * 
  * @param pin GPIO number where the REM wire is connected to.
  */
-void HunterRoam::HunterRoam(InternalGPIOPin *pin) {
+void HunterRoam::setup(InternalGPIOPin *pin) {
 	_pin = pin;
 	this->pin_->pin_mode(gpio::FLAG_OUTPUT);
 }
