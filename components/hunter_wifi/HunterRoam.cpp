@@ -28,7 +28,7 @@
  */
 HunterRoam::HunterRoam(InternalGPIOPin *pin) {
 	_pin = pin;
-	pinMode(pin, OUTPUT);
+	this->pin_->pin_mode(gpio::FLAG_OUTPUT);
 }
 
 /**
