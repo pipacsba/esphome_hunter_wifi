@@ -214,7 +214,7 @@ void HunterRoam::writeBus(std::vector<uint8_t> buffer, bool extrabit) {
 	delay(SHORT_INTERVAL);
 
 	// Write the bits out
-	for (auto &send : buffer) {
+	for (auto &sendByte : buffer) {
 		for (uint8_t inner = 0; inner < 8; inner++) {
 			// Send high order bits first
 			(sendByte & 0x80) ? sendHigh() : sendLow();
