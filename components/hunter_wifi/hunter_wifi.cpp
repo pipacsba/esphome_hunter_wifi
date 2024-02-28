@@ -25,7 +25,7 @@ void HunterZoneSwitch::loop() {
 
 //send REM message in case of switch representing a zone is switched (changes state)
 void HunterZoneSwitch::write_state(bool state) {
-  hunter_roam_ = new HunterRoam(pin_->get_pin());  // NOLINT(cppcoreguidelines-owning-memory)
+  hunter_roam_ = new HunterRoam(pin_);  // NOLINT(cppcoreguidelines-owning-memory)
   uint8_t a_zone = zone_;
   uint8_t result;
     
@@ -140,8 +140,6 @@ size_t HunterWifiComponent::number_of_valves() { return this->valve_.size(); }
  * 
  * 			        ------ Eloi Codina Torras - July 2020 ------
  */
-
-#include "HunterRoam.h"
 
 /**
  * Constructor for the object HunterRoam.
