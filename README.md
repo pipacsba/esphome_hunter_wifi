@@ -1,6 +1,9 @@
 # esphome_hunter_wifi
 
-The goal of this project to find a way to integrate ecodina/hunter-wifi project into esphome.
+A big thank you for the original coders: [Sebastien](https://github.com/seb821/OpenSprinkler-Firmware-Hunter) and [Ecodina](https://github.com/ecodina/hunter-wifi)
+
+The main branch is working with arduino framework (successfull irrigation during the last summer), combined with the esphome sprinkel components (and HACS smart irrigation component).
+The esp-idf branch targets the esp-idf framework - testing this summer. (it compiles, and no functional change is intended)
 
 ## License
 
