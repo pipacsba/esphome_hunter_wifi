@@ -21,7 +21,7 @@ class HunterRoam {
         uint8_t stopZone(uint8_t zone);
         uint8_t startZone(uint8_t zone, uint8_t time);
         uint8_t startProgram(uint8_t num);
-        String errorHint(uint8_t error);
+        std_string errorHint(uint8_t error);
     
     private:
         int _pin;
