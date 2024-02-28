@@ -160,15 +160,15 @@ HunterRoam::HunterRoam(InternalGPIOPin *pin) {
 std::string HunterRoam::errorHint(uint8_t error) {
 	switch (error) {
 		case 0:
-			return string("No error.");
+			return to_string("No error.");
 		case 1:
-			return string("Invalid zone number.");
+			return to_string("Invalid zone number.");
 		case 2:
-			return string("Invalid watering time.");
+			return to_string("Invalid watering time.");
 		case 3:
-			return string("Invalid program number.");
+			return to_string("Invalid program number.");
 		default:
-			return string("Unknonwn error.");
+			return to_string("Unknonwn error.");
 	}
 }
 
