@@ -36,7 +36,7 @@ HunterRoam::HunterRoam(int pin) {
  * 
  * @param error number returned by a public function of this library
  */
-String HunterRoam::errorHint(byte error) {
+String HunterRoam::errorHint(uint8_t error) {
 	switch (error) {
 		case 0:
 			return String("No error.");
@@ -79,7 +79,7 @@ void HunterRoam::sendHigh() {
  * @param buffer blob containing the bits to transmit
  * @param extrabit if true, then write an extra 1 bit
  */
-void HunterRoam::writeBus(std::vector<byte> buffer, bool extrabit) {
+void HunterRoam::writeBus(std::vector<uint8_t> buffer, bool extrabit) {
 	// Resetimpulse
 	digitalWrite(_pin, HIGH);
 	delay(325); //milliseconds
@@ -118,7 +118,7 @@ void HunterRoam::writeBus(std::vector<byte> buffer, bool extrabit) {
  * @param val to write
  * @param len in bits of the value
  */
-void HunterRoam::hunterBitfield(std::vector <byte> &bits, byte pos, byte val, byte len) {
+void HunterRoam::hunterBitfield(std::vector <uint8_t> &bits, uint8_t pos, uint8_t val, uint8_t len) {
 	while (len > 0) {
 		if (val & 0x1) {
 			bits[pos / 8] = bits[pos / 8] | 0x80 >> (pos % 8);
@@ -137,10 +137,10 @@ void HunterRoam::hunterBitfield(std::vector <byte> &bits, byte pos, byte val, by
  * @param zone zone number (1-48)
  * @param time time in minutes (0-240)
  */
-byte HunterRoam::startZone(byte zone, byte time) {
+byte HunterRoam::startZone(uint8_t zone, uint8_t time) {
 
 	// Start out with a base frame
-	std::vector<byte> buffer = {0xff,0x00,0x00,0x00,0x10,0x00,0x00,0x04,0x00,0x00,0x01,0x00,0x01,0xb8,0x3f};
+	std::vector<uint8_t> buffer = {0xff,0x00,0x00,0x00,0x10,0x00,0x00,0x04,0x00,0x00,0x01,0x00,0x01,0xb8,0x3f};
 
 	if (zone < 1 || zone > 48) {
 		return 1;
@@ -195,7 +195,7 @@ byte HunterRoam::startZone(byte zone, byte time) {
  * 
  * @param zone - zone number (1-48)
  */
-byte HunterRoam::stopZone(byte zone) {
+byte HunterRoam::stopZone(uint8_t zone) {
 	return startZone(zone, 0);
 }
 
@@ -204,7 +204,7 @@ byte HunterRoam::stopZone(byte zone) {
  * 
  * @param num - program number (1-4)
  */
-byte HunterRoam::startProgram(byte num) {
+byte HunterRoam::startProgram(uint8_t num) {
 	// Start with a basic program frame
 	std::vector<byte> buffer = {0xff, 0x40, 0x03, 0x96, 0x09 ,0xbd ,0x7f};
 
