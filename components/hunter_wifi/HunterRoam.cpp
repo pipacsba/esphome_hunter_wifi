@@ -19,7 +19,6 @@
  */
 
 #include "HunterRoam.h"
-#include "esphome/core/hal.h"
 
 /**
  * Constructor for the object HunterRoam.
