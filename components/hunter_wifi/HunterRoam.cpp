@@ -36,18 +36,18 @@ HunterRoam::HunterRoam(int pin) {
  * 
  * @param error number returned by a public function of this library
  */
-std_string HunterRoam::errorHint(uint8_t error) {
+std::string HunterRoam::errorHint(uint8_t error) {
 	switch (error) {
 		case 0:
-			return std_string("No error.");
+			return string("No error.");
 		case 1:
-			return std_string("Invalid zone number.");
+			return string("Invalid zone number.");
 		case 2:
-			return std_string("Invalid watering time.");
+			return string("Invalid watering time.");
 		case 3:
-			return std_string("Invalid program number.");
+			return string("Invalid program number.");
 		default:
-			return std_string("Unknonwn error.");
+			return string("Unknonwn error.");
 	}
 }
 
