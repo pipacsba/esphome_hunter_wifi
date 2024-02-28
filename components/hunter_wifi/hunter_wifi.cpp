@@ -177,9 +177,9 @@ std::string HunterRoam::errorHint(uint8_t error) {
  */
 void HunterRoam::sendLow() {
 	this->pin_->digital_write(HIGH);
-	delay(SHORT_INTERVAL);
+	delayMicroseconds(SHORT_INTERVAL);
 	this->pin_->digital_write(LOW);
-	delay(LONG_INTERVAL);
+	delayMicroseconds(LONG_INTERVAL);
 }
 
 /**
@@ -189,9 +189,9 @@ void HunterRoam::sendLow() {
  */
 void HunterRoam::sendHigh() {
 	this->pin_->digital_write(HIGH);
-	delay(LONG_INTERVAL);
+	delayMicroseconds(LONG_INTERVAL);
 	this->pin_->digital_write(LOW);
-	delay(SHORT_INTERVAL);
+	delayMicroseconds(SHORT_INTERVAL);
 }
 
 /**
@@ -203,15 +203,15 @@ void HunterRoam::sendHigh() {
 void HunterRoam::writeBus(std::vector<uint8_t> buffer, bool extrabit) {
 	// Resetimpulse
 	this->pin_->digital_write(HIGH);
-	delay(325); //milliseconds
+	delayMicroseconds(325); //milliseconds
 	this->pin_->digital_write(LOW);
-	delay(65); //milliseconds
+	delayMicroseconds(65); //milliseconds
 
 	// Startimpulse
 	this->pin_->digital_write(HIGH);
-	delay(START_INTERVAL);
+	delayMicroseconds(START_INTERVAL);
 	this->pin_->digital_write(LOW);
-	delay(SHORT_INTERVAL);
+	delayMicroseconds(SHORT_INTERVAL);
 
 	// Write the bits out
 	for (auto &sendByte : buffer) {
