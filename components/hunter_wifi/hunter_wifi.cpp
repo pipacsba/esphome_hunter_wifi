@@ -267,7 +267,7 @@ uint8_t HunterRoam::startZone(uint8_t zone, uint8_t time) {
 		return 1;
 	}
 
-	if (time < 0 || time > 240) {
+	if (time > 240) {
 		return 2;
 	}
 
