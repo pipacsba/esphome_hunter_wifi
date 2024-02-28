@@ -93,8 +93,8 @@ void HunterRoam::writeBus(std::vector<uint8_t> buffer, bool extrabit) {
 	delayMicroseconds(SHORT_INTERVAL);
 
 	// Write the bits out
-	for (auto &sendByte : buffer) {
-		for (byte inner = 0; inner < 8; inner++) {
+	for (auto &send : buffer) {
+		for (uint8_t inner = 0; inner < 8; inner++) {
 			// Send high order bits first
 			(sendByte & 0x80) ? sendHigh() : sendLow();
 			sendByte <<= 1;
@@ -137,7 +137,7 @@ void HunterRoam::hunterBitfield(std::vector <uint8_t> &bits, uint8_t pos, uint8_
  * @param zone zone number (1-48)
  * @param time time in minutes (0-240)
  */
-byte HunterRoam::startZone(uint8_t zone, uint8_t time) {
+uint8_t HunterRoam::startZone(uint8_t zone, uint8_t time) {
 
 	// Start out with a base frame
 	std::vector<uint8_t> buffer = {0xff,0x00,0x00,0x00,0x10,0x00,0x00,0x04,0x00,0x00,0x01,0x00,0x01,0xb8,0x3f};
@@ -195,7 +195,7 @@ byte HunterRoam::startZone(uint8_t zone, uint8_t time) {
  * 
  * @param zone - zone number (1-48)
  */
-byte HunterRoam::stopZone(uint8_t zone) {
+uint8_t HunterRoam::stopZone(uint8_t zone) {
 	return startZone(zone, 0);
 }
 
@@ -204,9 +204,9 @@ byte HunterRoam::stopZone(uint8_t zone) {
  * 
  * @param num - program number (1-4)
  */
-byte HunterRoam::startProgram(uint8_t num) {
+uint8_t HunterRoam::startProgram(uint8_t num) {
 	// Start with a basic program frame
-	std::vector<byte> buffer = {0xff, 0x40, 0x03, 0x96, 0x09 ,0xbd ,0x7f};
+	std::vector<uint8_t> buffer = {0xff, 0x40, 0x03, 0x96, 0x09 ,0xbd ,0x7f};
 
 	if (num < 1 || num > 4) {
 		return 3;
