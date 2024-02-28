@@ -1,7 +1,10 @@
 #pragma once
 
+#include "esphome/core/defines.h"
+
 #ifndef HunterRoam_h
 #define HunterRoam_h
+
 
 #include <vector>
 
