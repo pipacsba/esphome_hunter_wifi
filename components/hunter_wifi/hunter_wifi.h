@@ -20,7 +20,7 @@ class HunterRoam;               // bus handling
 
 class HunterRoam {
     public:
-        HunterRoam(InternalGPIOPin *pin);
+        void HunterRoam(InternalGPIOPin *pin);
         uint8_t stopZone(uint8_t zone);
         uint8_t startZone(uint8_t zone, uint8_t time);
         uint8_t startProgram(uint8_t num);
