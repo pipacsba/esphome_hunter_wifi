@@ -13,6 +13,8 @@ namespace hunterwifi {
 #define START_INTERVAL 900
 #define SHORT_INTERVAL 208
 #define LONG_INTERVAL 1875
+#define HIGH true
+#define LOW false
 
 class HunterWifiComponent;      // this component
 class HunterZoneSwitch;         // switches representing any valve / zones
