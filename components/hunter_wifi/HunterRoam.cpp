@@ -26,7 +26,7 @@
  * 
  * @param pin GPIO number where the REM wire is connected to.
  */
-HunterRoam::HunterRoam(int pin) {
+HunterRoam::HunterRoam(InternalGPIOPin *pin) {
 	_pin = pin;
 	pinMode(pin, OUTPUT);
 }
