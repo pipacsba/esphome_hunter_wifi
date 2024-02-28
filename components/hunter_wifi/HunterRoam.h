@@ -1,6 +1,7 @@
 #pragma once
 
 #include "esphome/core/defines.h"
+#include "esphome/core/hal.h"
 
 #ifndef HunterRoam_h
 #define HunterRoam_h
