@@ -16,20 +16,28 @@
 
 #define HUNTER_PIN 16 // D0
 
-class HunterRoam {
-    public:
-        HunterRoam(InternalGPIOPin *pin);
-        uint8_t stopZone(uint8_t zone);
-        uint8_t startZone(uint8_t zone, uint8_t time);
-        uint8_t startProgram(uint8_t num);
-        std::string errorHint(uint8_t error);
-    
-    private:
-        InternalGPIOPin *pin_;
-        void hunterBitfield(std::vector <uint8_t> &bits, uint8_t pos, uint8_t val, uint8_t len);
-        void writeBus(std::vector<uint8_t> buffer, bool extrabit);
-        void sendLow(void);
-        void sendHigh(void);
+class HunterRoam : public Component {
+  public:
+    HunterRoam(InternalGPIOPin *pin);
+    uint8_t stopZone(uint8_t zone);
+    uint8_t startZone(uint8_t zone, uint8_t time);
+    uint8_t startProgram(uint8_t num);
+    std::string errorHint(uint8_t error);
+
+  private:
+    InternalGPIOPin *pin_;
+    void hunterBitfield(std::vector <uint8_t> &bits, uint8_t pos, uint8_t val, uint8_t len);
+    void writeBus(std::vector<uint8_t> buffer, bool extrabit);
+    void sendLow(void);
+    void sendHigh(void);
 };
+
+// define struct for zone valves
+struct HunterValve {
+  HunterZoneSwitch *valve_switch;
+  uint16_t zone_number;
+  uint16_t max_duration;
+  number::Number *duration_number_name{nullptr};
+}; 
 
 #endif
