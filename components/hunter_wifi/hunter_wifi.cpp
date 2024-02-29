@@ -203,9 +203,9 @@ void HunterRoam::sendHigh() {
 void HunterRoam::writeBus(std::vector<uint8_t> buffer, bool extrabit) {
 	// Resetimpulse
 	this->pin_->digital_write(HIGH);
-	delayMicroseconds(325); //milliseconds
+	delay(325); //milliseconds
 	this->pin_->digital_write(LOW);
-	delayMicroseconds(65); //milliseconds
+	delay(65); //milliseconds
 
 	// Startimpulse
 	this->pin_->digital_write(HIGH);
