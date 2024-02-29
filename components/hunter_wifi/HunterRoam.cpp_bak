@@ -18,15 +18,13 @@
  * 			        ------ Eloi Codina Torras - July 2020 ------
  */
 
-#include "HunterRoam.h"
-
 /**
  * Constructor for the object HunterRoam.
  * 
  * @param pin GPIO number where the REM wire is connected to.
  */
 HunterRoam::HunterRoam(InternalGPIOPin *pin) {
-	_pin = pin;
+	pin_ = pin;
 	this->pin_->pin_mode(gpio::FLAG_OUTPUT);
 }
 
@@ -39,15 +37,15 @@ HunterRoam::HunterRoam(InternalGPIOPin *pin) {
 std::string HunterRoam::errorHint(uint8_t error) {
 	switch (error) {
 		case 0:
-			return string("No error.");
+			return to_string("No error.");
 		case 1:
-			return string("Invalid zone number.");
+			return to_string("Invalid zone number.");
 		case 2:
-			return string("Invalid watering time.");
+			return to_string("Invalid watering time.");
 		case 3:
-			return string("Invalid program number.");
+			return to_string("Invalid program number.");
 		default:
-			return string("Unknonwn error.");
+			return to_string("Unknonwn error.");
 	}
 }
 
@@ -56,9 +54,9 @@ std::string HunterRoam::errorHint(uint8_t error) {
  */
 void HunterRoam::sendLow() {
 	this->pin_->digital_write(HIGH);
-	delay(SHORT_INTERVAL);
+	delayMicroseconds(SHORT_INTERVAL);
 	this->pin_->digital_write(LOW);
-	delay(LONG_INTERVAL);
+	delayMicroseconds(LONG_INTERVAL);
 }
 
 /**
@@ -68,9 +66,9 @@ void HunterRoam::sendLow() {
  */
 void HunterRoam::sendHigh() {
 	this->pin_->digital_write(HIGH);
-	delay(LONG_INTERVAL);
+	delayMicroseconds(LONG_INTERVAL);
 	this->pin_->digital_write(LOW);
-	delay(SHORT_INTERVAL);
+	delayMicroseconds(SHORT_INTERVAL);
 }
 
 /**
@@ -82,18 +80,18 @@ void HunterRoam::sendHigh() {
 void HunterRoam::writeBus(std::vector<uint8_t> buffer, bool extrabit) {
 	// Resetimpulse
 	this->pin_->digital_write(HIGH);
-	delay(325); //milliseconds
+	delayMicroseconds(325); //milliseconds
 	this->pin_->digital_write(LOW);
-	delay(65); //milliseconds
+	delayMicroseconds(65); //milliseconds
 
 	// Startimpulse
 	this->pin_->digital_write(HIGH);
-	delay(START_INTERVAL);
+	delayMicroseconds(START_INTERVAL);
 	this->pin_->digital_write(LOW);
-	delay(SHORT_INTERVAL);
+	delayMicroseconds(SHORT_INTERVAL);
 
 	// Write the bits out
-	for (auto &send : buffer) {
+	for (auto &sendByte : buffer) {
 		for (uint8_t inner = 0; inner < 8; inner++) {
 			// Send high order bits first
 			(sendByte & 0x80) ? sendHigh() : sendLow();
@@ -146,7 +144,7 @@ uint8_t HunterRoam::startZone(uint8_t zone, uint8_t time) {
 		return 1;
 	}
 
-	if (time < 0 || time > 240) {
+	if (time > 240) {
 		return 2;
 	}
 
