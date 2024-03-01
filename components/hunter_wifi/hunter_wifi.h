@@ -4,15 +4,37 @@
 #include "esphome/components/switch/switch.h"
 #include "esphome/core/hal.h"
 #include "esphome/components/number/number.h"
-#include "HunterRoam.h"
-
+//#include "HunterRoam.h"
 #include <vector>
 
 namespace esphome {
 namespace hunterwifi {
 
+#define START_INTERVAL 900
+#define SHORT_INTERVAL 208
+#define LONG_INTERVAL 1875
+#define HIGH true
+#define LOW false
+
 class HunterWifiComponent;      // this component
 class HunterZoneSwitch;         // switches representing any valve / zones
+class HunterRoam;               // bus handling
+
+class HunterRoam : public Component {
+  public:
+    HunterRoam(InternalGPIOPin *pin);
+    uint8_t stopZone(uint8_t zone);
+    uint8_t startZone(uint8_t zone, uint8_t time);
+    uint8_t startProgram(uint8_t num);
+    std::string errorHint(uint8_t error);
+
+  private:
+    InternalGPIOPin *pin_;
+    void hunterBitfield(std::vector <uint8_t> &bits, uint8_t pos, uint8_t val, uint8_t len);
+    void writeBus(std::vector<uint8_t> buffer, bool extrabit);
+    void sendLow(void);
+    void sendHigh(void);
+};
 
 // define struct for zone valves
 struct HunterValve {
@@ -60,9 +82,9 @@ class HunterZoneSwitch : public switch_::Switch, public Component {
   //define pin number to use for REM communication
   void set_pin(InternalGPIOPin *pin) { pin_ = pin; }
   //define the zone number as used in Huner device pinout
-  void set_zone(byte zone) { zone_ = zone; }
+  void set_zone(uint8_t zone) { zone_ = zone; }
   //set maximum zone sprinkler duration
-  void set_max_duration(byte max_duration) { max_duration_ = max_duration; }
+  void set_max_duration(uint8_t max_duration) { max_duration_ = max_duration; }
   //set duration number id
   void set_duration_number_name(number::Number *duration_number_name) {duration_number_name_ = duration_number_name;}
   
@@ -85,8 +107,8 @@ class HunterZoneSwitch : public switch_::Switch, public Component {
 
   InternalGPIOPin *pin_;
   HunterRoam *hunter_roam_;
-  byte zone_;
-  byte max_duration_;
+  uint8_t zone_;
+  uint8_t max_duration_;
   number::Number *duration_number_name_{nullptr};
 
   optional<std::function<optional<bool>()>> f_;
