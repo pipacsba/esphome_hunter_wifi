@@ -34,15 +34,78 @@ external_components:
     refresh: 1days
     #refresh: 1min
 
+sprinkler:
+  - id: sprinkler_ctrlr
+    main_switch: "Sprinklers"
+    auto_advance_switch: "Sprinklers Auto Advance"
+    valve_open_delay: 5s
+    valves:
+      - valve_switch: "Lawn Right Sprinklers"
+        enable_switch: "Enable Lawn Right Sprinklers"
+        #run_duration: 10min
+        run_duration_number:
+          name: "Lawn Right Run Duration"
+          id: lawn_right_run_duration
+          initial_value: 10
+          unit_of_measurement: min
+        valve_switch_id: lawn_sprinkler_valve_right_sw
+      - valve_switch: "Lawn Left Sprinklers"
+        enable_switch: "Enable Lawn Left Sprinklers"
+        #run_duration: 10min
+        run_duration_number:
+          name: "Lawn Left Run Duration"
+          id: lawn_left_run_duration
+          initial_value: 10
+          unit_of_measurement: min
+        valve_switch_id: lawn_sprinkler_valve_left_sw
+      - valve_switch: "Back Lawn Sprinklers"
+        enable_switch: "Enable Back Lawn Sprinklers"
+        #run_duration: 5min
+        run_duration_number:
+          name: "Back Lawn Run Duration"
+          id: back_lawn_run_duration
+          initial_value: 5
+          unit_of_measurement: min
+        valve_switch_id: back_lawn_sprinkler_valve_sw
+      - valve_switch: "Front Lawn Sprinklers"
+        enable_switch: "Enable Front Lawn Sprinklers"
+        #run_duration: 5min
+        run_duration_number:
+          name: "Front Lawn Run Duration"
+          id: front_lawn_run_duration
+          initial_value: 5
+          unit_of_measurement: min
+        valve_switch_id: front_lawn_sprinkler_valve_sw
+      - valve_switch: "Garden Sprinklers"
+        enable_switch: "Enable Garden Sprinklers"
+        #run_duration: 10min
+        run_duration_number:
+          name: "Garden Run Duration"
+          id: garden_run_duration
+          initial_value: 10
+          unit_of_measurement: min
+        valve_switch_id: garden_sprinkler_valve_sw
+
 hunter_wifi:
   pin: 16
   valves:
-    - id: "lawn_sprinkler_valve_sw0"
+    - id: "lawn_sprinkler_valve_right_sw"
       zone: 1
-      max_duration: 10
-      duration_id: "lawn_sprinkler_valve_sw0_run_minutes"
-    - id: "lawn_sprinkler_valve_sw1"
+      max_duration_minutes: 30
+      duration_number_name: lawn_right_run_duration
+    - id: "lawn_sprinkler_valve_left_sw"
       zone: 2
-      max_duration: 8
-      duration_id: "lawn_sprinkler_valve_sw1_run_minutes"
-
+      max_duration_minutes: 30
+      duration_number_name: lawn_left_run_duration
+    - id: "back_lawn_sprinkler_valve_sw"
+      zone: 3
+      max_duration_minutes: 15
+      duration_number_name: back_lawn_run_duration
+    - id: "front_lawn_sprinkler_valve_sw"
+      zone: 4
+      max_duration_minutes: 15
+      duration_number_name: front_lawn_run_duration
+    - id: "garden_sprinkler_valve_sw"
+      zone: 5
+      max_duration_minutes: 30
+      duration_number_name: garden_run_duration
