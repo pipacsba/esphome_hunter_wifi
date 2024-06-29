@@ -1,0 +1,172 @@
+
+template:
+  - trigger:
+      - platform: time_pattern
+        minutes: "/5"
+    action:
+      - service: weather.get_forecasts
+        target:
+          entity_id: weather.home
+        data:
+          type: daily
+        response_variable: today
+    sensor:
+      - name: sprinkler_enable
+        unique_id: sprinkler_enable_0001
+        attributes:
+          rain_today: '{{- ((today["weather.home"].forecast[0].precipitation * today["weather.home"].forecast[0].precipitation_probability / 100) > 1 ) -}}'
+          rain_in_the_past_not_too_hot: >
+                {% set rain_in_the_past = (1 < states.sensor.measured_precipitation.state | float(0) < 5) %}
+                {% set warm_day = (states.sensor.daily_max_temperature.state | float(0) < 27) %}
+                {{- rain_in_the_past and warm_day -}}
+          rain_in_the_past_hot: >
+                {% set rain_in_the_past = (5 < states.sensor.measured_precipitation.state | float(0) < 10) %}
+                {% set warm_day = (states.sensor.daily_max_temperature.state | float(0) > 27) %}
+                {{- rain_in_the_past and warm_day -}}
+          much_rain_in_the_past: '{{- 10 < states.sensor.measured_precipitation.state | float(0) -}}'
+          more_rain_predicted_not_too_hot: >
+               {% set rain_predict = (states.sensor.total_precipitation.state | float(0) > 5) %}
+               {% set warm_day = (states.sensor.daily_max_temperature.state | float(0) < 30) %}
+               {{- rain_predict and warm_day -}}
+        state: >
+            {% if state_attr('sensor.sprinkler_enable', 'rain_today') %}
+                {{- 1 == 0 -}}
+            {% elif state_attr('sensor.sprinkler_enable', 'rain_in_the_past_not_too_hot') %}
+                {{- 1 == 0 -}}
+            {% elif state_attr('sensor.sprinkler_enable', 'rain_in_the_past_hot') %}
+                {{- 1 == 0 -}}
+            {% elif state_attr('sensor.sprinkler_enable', 'much_rain_in_the_past') %}
+                {{- 1 == 0 -}}
+            {% elif state_attr('sensor.sprinkler_enable', 'more_rain_predicted_not_too_hot') %}
+                {{- 1 == 0 -}}
+            {% else %}
+                {{- 1 == 1 -}}
+            {% endif %}
+        availability: "{{ has_value('weather.home') }}"
+
+automation:
+  - alias: start_sprinkler
+    id: '26348001000001'
+    mode: parallel
+    trigger:
+      - platform: time
+        at: "05:30:00"
+        id: "morning"
+    condition:
+      condition: and
+      conditions:
+          - condition: state
+            entity_id:
+              - switch.hunter_wifi_enable_garden_sprinklers
+              - switch.hunter_wifi_enable_front_lawn_sprinklers
+              - switch.hunter_wifi_enable_lawn_left_sprinklers
+              - switch.hunter_wifi_enable_lawn_right_sprinklers
+              - switch.hunter_wifi_enable_back_lawn_sprinklers
+            match: any
+            state: "on"
+          - "{{- states('sensor.smart_irrigation_lawn') | int(0) > 600 -}}"
+          - "{{- ((states.sensor.netatmo_pipacsbahome_indoor_raingauge_rain_last_hour.state == '0') and (states.sensor.netatmo_pipacsbahome_indoor_raingauge_rain.state == '0')) -}}"
+    action:
+      - service: esphome.hunter_wifi_start_full_cycle
+      - service: smart_irrigation.reset_all_buckets
+
+  - alias: set_sprinkler_times
+    id: '26348001000002'
+    mode: single
+    trigger:
+      - platform: time
+        at: "05:00:00"
+        id: "morning"
+    action:
+      #- service: smart_irrigation.lawn_calculate_daily_adjusted_run_time
+      #- service: smart_irrigation.back_lawn_calculate_daily_adjusted_run_time
+      #- service: smart_irrigation.front_lawn_calculate_daily_adjusted_run_time
+      #- service: smart_irrigation.garden_calculate_daily_adjusted_run_time
+      - delay: 20
+      - service: number.set_value
+        data:
+          value: "{{- max(1, (states('sensor.smart_irrigation_back_lawn') | int(0) / 60) | round(0,ceil)) -}}"
+        target:
+          entity_id: number.hunter_wifi_back_lawn_run_duration
+      - service: number.set_value
+        data:
+          value: "{{- max(1, (states('sensor.smart_irrigation_front_lawn') | int(0) / 60) | round(0,ceil)) -}}"
+        target:
+          entity_id: number.hunter_wifi_front_lawn_run_duration
+      - service: number.set_value
+        data:
+          value: "{{- max(1, (states('sensor.smart_irrigation_lawn') | int(0) / 60) | round(0,ceil)) -}}"
+        target:
+          entity_id: number.hunter_wifi_lawn_left_run_duration
+      - service: number.set_value
+        data:
+          value: "{{- max(1, (states('sensor.smart_irrigation_lawn') | int(0) / 60) | round(0,ceil)) -}}"
+        target:
+          entity_id: number.hunter_wifi_lawn_right_run_duration
+      - service: number.set_value
+        data:
+          value: "{{ max(1, (states('sensor.smart_irrigation_garden') | int(0) / 60) | round(0,ceil)) -}}"
+        target:
+          entity_id: number.hunter_wifi_garden_run_duration
+      - service: "{{ 'switch.turn_on' if (states('sensor.smart_irrigation_back_lawn') | int(0) > 30) else 'switch.turn_off' }}"
+        target:
+          entity_id: switch.hunter_wifi_enable_back_lawn_sprinklers
+      - service: "{{ 'switch.turn_on' if (states('sensor.smart_irrigation_front_lawn') | int(0) > 30) else 'switch.turn_off' }}"
+        target:
+          entity_id: switch.hunter_wifi_enable_front_lawn_sprinklers
+      - service: "{{ 'switch.turn_on' if (states('sensor.smart_irrigation_lawn') | int(0) > 30) else 'switch.turn_off' }}"
+        target:
+          entity_id: 
+            - switch.hunter_wifi_enable_lawn_left_sprinklers
+            - switch.hunter_wifi_enable_lawn_right_sprinklers
+      - service: "{{ 'switch.turn_on' if (states('sensor.smart_irrigation_garden') | int(0) > 30) else 'switch.turn_off' }}"
+        target:
+          entity_id: switch.hunter_wifi_enable_garden_sprinklers
+      
+  - alias: update_irrigation_water_usage
+    id: '26348001000003'
+    mode: queued
+    trigger:
+      - platform: state
+        entity_id:
+          - switch.hunter_wifi_back_lawn_sprinklers
+          - switch.hunter_wifi_front_lawn_sprinklers
+          - switch.hunter_wifi_garden_sprinklers
+          - switch.hunter_wifi_lawn_left_sprinklers
+          - switch.hunter_wifi_lawn_right_sprinklers
+        from: "on"
+        to: "off"
+    action:
+      - service: input_number.set_value
+        data: 
+          value: >
+            {% set orig_value = states('input_number.water_consumption_of_irrigation_system') | float(0) %}
+            {% set d_t = (now() - trigger.from_state.last_changed).total_seconds() | float(0) %}
+            {% if d_t > 240 * 60 %}
+              {% set d_t = 0 | float(0) %}
+            {% endif %}
+            {% set lawn_right = ((945 - 928) / 60 / 1000) | float(0) %}
+            {% set lawn_left = ((965 - 945) / 60 / 1000) | float(0) %}
+            {% set back_lawn = ((992 - 965) / 60 / 1000) | float(0) %}
+            {% set front_lawn = ((1019 - 992) / 60 / 1000) | float(0) %}
+            {% set garden = ((1036 - 1019) / 60 / 1000) | float(0) %}
+            {% if trigger.entity_id == 'switch.hunter_wifi_back_lawn_sprinklers' %}
+              {{ orig_value + d_t * back_lawn }}
+            {% elif trigger.entity_id == 'switch.hunter_wifi_front_lawn_sprinklers' %}
+              {{ orig_value + d_t * front_lawn }}            
+            {% elif trigger.entity_id == 'switch.hunter_wifi_lawn_left_sprinklers' %}
+              {{ orig_value + d_t * lawn_left }} 
+            {% elif trigger.entity_id == 'switch.hunter_wifi_lawn_right_sprinklers' %}
+              {{ orig_value + d_t * lawn_right }} 
+            {% elif trigger.entity_id == 'switch.hunter_wifi_garden_sprinklers' %}
+              {{ orig_value + d_t * garden }}
+            {% else %}
+              {{ orig_value }}
+            {% endif %}
+        target:
+          entity_id: input_number.water_consumption_of_irrigation_system
+          
+script:
+  empty_buckets:
+    sequence:
+      - service: smart_irrigation.reset_all_buckets
