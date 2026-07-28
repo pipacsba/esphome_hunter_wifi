@@ -12,6 +12,8 @@ This external component connects an ESPHome device to a Hunter irrigation
 controller and exposes its stations/zones to Home Assistant, allowing local
 automation and control without replacing the existing irrigation hardware.
 
+The component relies and extends the already existing "sprinkler" component.
+
 ## Why?
 
 Many Hunter irrigation systems are reliable irrigation controllers but have
